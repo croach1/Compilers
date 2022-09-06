@@ -1,0 +1,91 @@
+/*************************************
+ * sample.lpp
+ * COSC4785/5785
+ * $Author: kbuckner $
+ * $Date: 2020-08-25 13:03:41-06 $
+ * $Id: sample.lpp,v 1.1 2020-08-25 13:03:41-06 kbuckner Exp kbuckner $
+ *
+ * This is the input to flex that generates the scanner. It returns integers.
+ * In this simple version it just returns 1 until it is done. 
+ *
+ * $Log: sample.lpp,v $
+ * Revision 1.1  2020-08-25 13:03:41-06  kbuckner
+ * Initial revision
+ *
+ *
+ *
+ ***********************************/
+%{
+  /*
+   * This between %{ and %} is copied verbatim into the generated scanner.
+   */
+
+using std::string;
+using std::cerr;
+
+#include"sample.hpp" // because of this I can use "value" in this file
+
+
+/*
+ * The noyywrap is how the scanner handles end of file, meant to allow it to
+ * find the next file(s). But now it will just quit. 
+ * Get the line numbers from the scanner because of yylineno
+ */
+%}
+%option outfile="sample_lex.cpp"
+%option noyywrap
+%option yylineno
+
+  /*
+   * DO NOT define 945  different regular expressions. You do NOT need most of
+   * them. Notice that I put them in as simple rules. Eventually you will need
+   * to separate ALL those fancy expressions into single simple rules anyway so
+   * why not start now. 
+   */
+
+%%
+quit            {
+                  return 0;
+                }
+Quit            {
+                  return 0;
+                }
+QUIT            {
+                  return 0;
+                }
+  /*
+   * Words
+   */
+[a-zA-Z]+    {
+                  value="Word: ";
+                  return 1;
+                }
+  /*
+   * Numbers. 
+   */
+[0-9]+          {
+                  value="Numb: ";
+                  return 1;
+                }
+  /*
+   * Whitespace: tab, space, newline.
+   */
+\t              { 
+                  // do nothing ignore it
+                }
+
+\n              {
+                  // do nothing ignore it
+                }
+" "+            { 
+                  // do nothing ignore it
+                }
+  /*
+   * Matches anything not matched. MUST BE LAST RULE.
+   */
+.               {
+                  value="Unk : ";
+                  return 1;
+                }
+%%
+

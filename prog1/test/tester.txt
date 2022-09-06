@@ -1,0 +1,13 @@
+first line here
+second line here
+compare == > < >= <= !=
+logical || &&
+math + - * /
+enclosing { } [ ] ( )
+punctuation . , ;
+keywords this if else while	tab
+ids test1 Test2 _Test3_
+integer 1 123 4567890
+float 1.234 42.0E01 1.0e17 42.7e09 9e+08 2.3E-45
+junk % ! @
+first	second	third	fourth	fifth
