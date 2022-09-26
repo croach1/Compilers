@@ -1,0 +1,206 @@
+/*
+ program2.lpp
+ COSC 4785
+ Colton Roach
+ September 25, 2022
+ some help on c comment matching from stackoverflow.com/questions/2130097/difficulty-getting-c-style-comments-in-flex-lex
+*/
+
+%{
+
+using namespace std;
+
+#include "program2.hpp"
+
+%}
+%x C_COMMENT
+
+%option outfile="program2_lex.cpp"
+%option noyywrap
+%option yylineno
+
+
+%%
+
+"="     {
+            token="ASSIGN";
+            return 2;
+        }
+"=="    {
+            token="EQ";
+            return 2;
+        }
+">"     {
+            token="GT";
+            return 2;
+        }
+"<"     {
+            token="LT";
+            return 2;
+        }
+">="    {
+            token="GEQ";
+            return 2;
+        }
+"<="    {
+            token="LEQ";
+            return 2;
+        }
+"!="    {
+            token="NEQ";
+            return 2;
+        }
+"+"     {
+            token="PLUS";
+            return 2;
+        }
+"-"     {
+            token="MINUS";
+            return 2;
+        }
+"*"     {
+            token="TIMES";
+            return 2;
+        }
+"/"     {
+            token="DIV";
+            return 2;
+        }
+"||"    {
+            token="OR";
+            return 2;
+        }
+"&&"    {
+            token="AND";
+            return 2;
+        }
+"{"     {
+            token="LBRACE";
+            return 2;
+        }
+"}"     {
+            token="RBRACE";
+            return 2;
+        }
+"["     {
+            token="LBRACK";
+            return 2;
+        }
+"]"     {
+            token="RBRACK";
+            return 2;
+        }
+"("     {
+            token="LPAREN";
+            return 2;
+        }
+")"     {
+            token="RPAREN";
+            return 2;
+        }
+"."     {
+            token="DOT";
+            return 2;
+        }
+","     {
+            token="COMMA";
+            return 2;
+        }
+";"     {
+            token="SEMI";
+            return 2;
+        }
+"!"     {
+            token="NOT";
+            return 2;
+        }
+"%"     {
+            token="MOD";
+            return 2;
+        }
+\/\/.*\n  {
+            token="COMMENT";
+            return 6;
+        }
+"/*"    {
+            BEGIN(C_COMMENT);
+        }
+<C_COMMENT>"*/" {
+            BEGIN(INITIAL);
+        }
+<C_COMMENT>\n {
+        }
+<C_COMMENT>\n {
+        }
+<C_COMMENT>.  {
+        }
+"this"  {
+            token="THIS";
+            return 2;
+        }
+"if"    {
+            token="IF";
+            return 2;
+        }
+"else"  {
+            token="ELSE";
+            return 2;
+        }
+"while" {
+            token="WHILE";
+            return 2;
+        }
+"int"   {
+            token="INT";
+            return 2;
+        }
+"void"  {
+            token="VOID";
+            return 2;
+        }
+"class" {
+            token="CLASS";
+            return 2;
+        }
+"new"   {
+            token="NEW";
+            return 2;
+        }
+"print" {
+            token="PRINT";
+            return 2;
+        }
+"read"  {
+            token="READ";
+            return 2;
+        }
+"return" {
+            token="RETURN";
+            return 2;
+        }
+"null"  {
+            token="NULLT";
+            return 2;
+        }
+[_a-zA-Z][_a-zA-Z0-9]*  {
+            token="IDENT";
+            return 1;
+        }
+[+-]?[0-9]+  {
+            token="NUMBER";
+            return 1;
+        }
+\n      {
+            return 5;
+        }
+\t      {
+            return 4;
+        }
+" "     {
+            return 3;   
+        }
+.       {
+            token="ER_CH";
+            return -9999;
+        }
+%%

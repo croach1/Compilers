@@ -1,0 +1,19 @@
+A_4TheCoun@t+Not
+
+Third Line Here
+testing normal comment now //here's a long comment
+testing block comment 1 line /*here's a block comment*/
+testing block comment multiline /*here's a
+block comment*/
+
+Identifiers: test _test test1 _test1 test_1 _test_1 tesT1 _tesT1_
+
+Numbers: 1 1234 +1234 -1234
+
+Keywords: int void class new print read return while if else this null
+
+Operators: [ ] { } != == < > <= >= && || ! + - * / % ; , ( ) = . //
+
+Errors: ^tester9_09@@*&beanbag12_78bean
+
+: : : : : : : : : : : : : : : : : : : : : : : : : : : : : : : : : :
