@@ -1,0 +1,28 @@
+Colton Roach 
+HW 1
+Grade:   89 / 95
+
+1. But what about the value for "x" in function c? (-1 point)
+
+2. ok
+
+3.a. Not a derivation but ok. 
+  b. ok
+  c. ok
+
+4.a. but 0 would be an equal number and the empty string is not in the
+language. (-1 point)
+
+  b. ok
+  c. ok
+  d. ok
+
+5.a. ok
+  b. ok
+  c. ok
+  d. ok
+
+6.a. ok
+  b. ok
+  c. no response (-5 points)
+

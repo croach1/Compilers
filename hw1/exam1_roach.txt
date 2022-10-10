@@ -1,0 +1,31 @@
+Colton Roach 
+EXAM 1
+Grade:   91.5 / 100
+
+1.a. ok
+  b. ok
+
+2. ok
+
+3. ok
+
+4.a. ok
+  b. ok
+
+5. ok
+
+6. ok
+
+7.a. ok
+  b. And that the input matches the grammar rules (-2 points)
+  c. ok
+
+8. Not really. In regular expressions, this is a shorthand for 'or'ing multiple
+characters as in [A-Z] which will match any 1 uppercase letter. 
+(-6 points)
+
+9. ok but ALL states need labels. (-1/2 point)
+
+10.a. ok
+   b. ok
+

@@ -1,0 +1,51 @@
+<program> -> <elements>
+  <elements> -> <vardec>
+    <vardec> --> ID ID SEMI
+      <type> -> INT
+      ID --> a
+<program> -> <program> <elements>
+  <elements> -> <vardec>
+    <vardec> --> ID ID SEMI
+      <type> -> INT
+      ID --> word
+<program> -> <program> <elements>
+  <elements> -> <vardec>
+    <vardec> --> ID ID SEMI
+      ID --> top
+      ID --> down
+<program> -> <program> <elements>
+  <elements> -> <vardec>
+    <vardec> --> ID <multibrackets> ID SEMI
+      <type> -> INT
+      <multibrackets> --> []
+      ID --> d
+<program> -> <program> <elements>
+  <elements> -> <vardec>
+    <vardec> --> ID <multibrackets> ID SEMI
+      <type> -> INT
+      <multibrackets> --> [][]
+      ID --> e
+<program> -> <program> <elements>
+  <elements> -> <vardec>
+    <vardec> --> ID <multibrackets> ID SEMI
+      <type> -> INT
+      <multibrackets> --> [][][]
+      ID --> e
+<program> -> <program> <elements>
+  <elements> -> <vardec>
+    <vardec> --> ID <multibrackets> ID SEMI
+      ID --> other
+      <multibrackets> --> []
+      ID --> f
+<program> -> <program> <elements>
+  <elements> -> <vardec>
+    <vardec> --> ID <multibrackets> ID SEMI
+      ID --> other
+      <multibrackets> --> [][]
+      ID --> g
+<program> -> <program> <elements>
+  <elements> -> <vardec>
+    <vardec> --> ID <multibrackets> ID SEMI
+      ID --> other
+      <multibrackets> --> [][][]
+      ID --> g

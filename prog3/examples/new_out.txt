@@ -1,0 +1,76 @@
+<program> -> <elements>
+  <newexp> --> NEW ID ( )
+    ID --> obj
+<program> -> <program> <elements>
+  <newexp> --> NEW <type> 
+    <type> -> INT
+<program> -> <program> <elements>
+  <newexp> --> NEW <type> <bracketexps>
+    <type> -> INT
+    <bracketexp> --> [ <exp> ]
+      <exp> --> NUMBER
+        NUMBER --> 4
+<program> -> <program> <elements>
+  <newexp> --> NEW <type> <bracketexps>
+    <type> -> INT
+    <bracketexp> --> [ <exp> ]
+      <exp> --> NUMBER
+        NUMBER --> 4
+    <bracketexp> --> [ <exp> ]
+      <exp> --> NUMBER
+        NUMBER --> 5
+<program> -> <program> <elements>
+  <newexp> --> NEW ID <bracketexps>
+    ID --> obj
+    <bracketexp> --> [ <exp> ]
+      <exp> --> NUMBER
+        NUMBER --> 4
+<program> -> <program> <elements>
+  <newexp> --> NEW ID <bracketexps>
+    ID --> obj
+    <bracketexp> --> [ <exp> ]
+      <exp> --> NUMBER
+        NUMBER --> 4
+    <bracketexp> --> [ <exp> ]
+      <exp> --> NUMBER
+        NUMBER --> 5
+<program> -> <program> <elements>
+  <newexp> --> NEW <type> <bracketexps>
+    <type> -> INT
+    <bracketexp> --> [ <exp> ]
+      <exp> --> NUMBER
+        NUMBER --> 4
+    <bracketexp> --> [ <exp> ]
+      <exp> --> NUMBER
+        NUMBER --> 5
+    <multibrackets> --> []
+<program> -> <program> <elements>
+  <newexp> --> NEW <type> <bracketexps>
+    <type> -> INT
+    <bracketexp> --> [ <exp> ]
+      <exp> --> NUMBER
+        NUMBER --> 4
+    <bracketexp> --> [ <exp> ]
+      <exp> --> NUMBER
+        NUMBER --> 5
+    <multibrackets> --> [][]
+<program> -> <program> <elements>
+  <newexp> --> NEW ID <bracketexps>
+    ID --> obj
+    <bracketexp> --> [ <exp> ]
+      <exp> --> NUMBER
+        NUMBER --> 4
+    <bracketexp> --> [ <exp> ]
+      <exp> --> NUMBER
+        NUMBER --> 5
+    <multibrackets> --> []
+<program> -> <program> <elements>
+  <newexp> --> NEW ID <bracketexps>
+    ID --> obj
+    <bracketexp> --> [ <exp> ]
+      <exp> --> NUMBER
+        NUMBER --> 4
+    <bracketexp> --> [ <exp> ]
+      <exp> --> NUMBER
+        NUMBER --> 5
+    <multibrackets> --> [][]

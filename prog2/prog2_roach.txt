@@ -1,0 +1,149 @@
+Colton Roach 
+PROG 2
+Grade:   84 / 100
+
+Program:
+
+FLEX warning unmatched rule. Because you duplicated this rule
+
+<C_COMMENT>\n { 
+}
+
+(-3 points)
+
+******************
+
+ER_WD NOT recognized at all. (-5 points)
+
+******************
+
+You do not count columns correctly in multiline comments. Input has a 3 line
+comment that ends at column 14 and you say the vardec that follows starts at
+column 1. That is probably wrong. (-3 points)
+
+******************
+
+I told the class that this program needs to return an individual integer "token"
+for each (like 42 for "this", 43 for "if", etc.) NOT 2 and then set some arbitrary 
+variable to indicate what it is. (-5 points)
+
+
+
+
+#############################
+autograde output
+#############################
+
+roach
+
+Tar:
+
+
+Make:
+
+flex++ --warn program2.lpp
+program2.lpp:133: warning, rule cannot be matched
+g++  program2.cpp program2_lex.cpp -o program2
+
+Execute:
+
+Line    Column  Token   Value   
+1       1       IDENT   Keywords_12_each_line_1_start_on_3
+3       1       INT     
+4       1       PRINT   
+5       1       IF      
+6       1       VOID    
+7       1       READ    
+8       1       ELSE    
+9       1       CLASS   
+10      1       RETURN  
+11      1       THIS    
+12      1       NEW     
+13      1       WHILE   
+14      1       NULLT   
+16      1       IDENT   An_integer_line_16_on_18
+18      1       NUMBER  45678   
+20      1       IDENT   A_class_for_gp_line_20_start_22
+22      1       CLASS   
+22      7       IDENT   printa  
+22      13      LBRACE  
+23      3       INT     
+23      7       IDENT   classb  
+23      13      SEMI    
+24      3       INT     
+24      7       IDENT   elsec   
+24      12      SEMI    
+25      1       RBRACE  
+27      1       IDENT   A_var_dec_line_27_start_28
+28      1       INT     
+28      5       IDENT   b       
+28      6       SEMI    
+30      1       IDENT   Multiline_comment_with_var_dec_on_end_last_line_line_30_on_line35_col15
+35      1       INT     
+35      5       IDENT   end_of_comment
+35      19      SEMI    
+37      1       IDENT   errorChars_10_line_37_start_38
+39      1       ER_CH   ~       
+40      1       ER_CH   \       
+41      1       ER_CH   `       
+42      1       ER_CH   '       
+43      1       ER_CH   "       
+44      1       ER_CH   :       
+45      1       ER_CH   ^       
+46      1       ER_CH   #       
+47      1       ER_CH   @       
+48      1       ER_CH   ?       
+49      1       IDENT   Error_chars_followed_by_keywords_line_49_start_50_should_be_error_words
+50      1       ER_CH   ?       
+50      2       THIS    
+51      1       ER_CH   ^       
+51      2       ELSE    
+52      1       ER_CH   "       
+52      2       IF      
+53      1       ER_CH   @       
+53      2       READ    
+56      1       IDENT   The_operators_are_all_here_24_total_line_56_start_57_comment_should_be_2_div
+57      1       LBRACK  
+57      3       RBRACK  
+57      5       LBRACE  
+57      7       RBRACE  
+58      1       NEQ     
+58      4       EQ      
+58      7       LT      
+58      9       GT      
+59      1       LEQ     
+59      4       GEQ     
+59      7       AND     
+59      10      OR      
+60      1       NOT     
+60      3       PLUS    
+60      5       MINUS   
+60      7       TIMES   
+61      1       DIV     
+61      3       MOD     
+61      5       SEMI    
+61      7       COMMA   
+62      1       LPAREN  
+62      3       RPAREN  
+62      5       ASSIGN  
+63      1       DOT     
+65      1       IDENT   Various_identifiers_line_65_start_66_and_single_line_comments
+66      1       IDENT   _Identifier
+67      1       IDENT   I_dentifi23
+68      1       NUMBER  23      
+68      3       IDENT   _Ident  
+71      1       IDENT   word_errors_2_line_71_start_72
+73      1       ER_WD   ~wordError
+73      1       ER_WD   @@      
+75      1       IDENT   errorChars_10_too_many_errors_line_75_stop_at_79_single_quote
+77      1       ER_CH   ~       
+78      1       ER_CH   \       
+79      1       ER_CH   `       
+80      1       ER_CH   '       
+81      1       ER_CH   "       
+81      1       ERRORS  :       
+Encountered over 20 errors, exiting.
+
+Make clean:
+
+/bin/rm -f program2 program2_lex.cpp
