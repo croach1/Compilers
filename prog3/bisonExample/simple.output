@@ -1,0 +1,313 @@
+Grammar
+
+    0 $accept: input $end
+
+    1 input: line
+    2      | input line
+
+    3 line: exp NL
+
+    4 exp: NUM
+    5    | exp PLUS exp
+    6    | exp MINUS exp
+    7    | exp TIMES exp
+    8    | exp DIV exp
+    9    | exp EXP exp
+   10    | MINUS exp
+   11    | LPAREN exp RPAREN
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+NUM (258) 4
+RPAREN (259) 11
+LPAREN (260) 11
+NL (261) 3
+PLUS (262) 5
+MINUS (263) 6 10
+TIMES (264) 7
+DIV (265) 8
+NEG (266)
+EXP (267) 9
+
+
+Nonterminals, with rules where they appear
+
+$accept (13)
+    on left: 0
+input (14)
+    on left: 1 2, on right: 0 2
+line (15)
+    on left: 3, on right: 1 2
+exp (16)
+    on left: 4 5 6 7 8 9 10 11, on right: 3 5 6 7 8 9 10 11
+
+
+State 0
+
+    0 $accept: . input $end
+
+    NUM     shift, and go to state 1
+    LPAREN  shift, and go to state 2
+    MINUS   shift, and go to state 3
+
+    input  go to state 4
+    line   go to state 5
+    exp    go to state 6
+
+
+State 1
+
+    4 exp: NUM .
+
+    $default  reduce using rule 4 (exp)
+
+
+State 2
+
+   11 exp: LPAREN . exp RPAREN
+
+    NUM     shift, and go to state 1
+    LPAREN  shift, and go to state 2
+    MINUS   shift, and go to state 3
+
+    exp  go to state 7
+
+
+State 3
+
+   10 exp: MINUS . exp
+
+    NUM     shift, and go to state 1
+    LPAREN  shift, and go to state 2
+    MINUS   shift, and go to state 3
+
+    exp  go to state 8
+
+
+State 4
+
+    0 $accept: input . $end
+    2 input: input . line
+
+    $end    shift, and go to state 9
+    NUM     shift, and go to state 1
+    LPAREN  shift, and go to state 2
+    MINUS   shift, and go to state 3
+
+    line  go to state 10
+    exp   go to state 6
+
+
+State 5
+
+    1 input: line .
+
+    $default  reduce using rule 1 (input)
+
+
+State 6
+
+    3 line: exp . NL
+    5 exp: exp . PLUS exp
+    6    | exp . MINUS exp
+    7    | exp . TIMES exp
+    8    | exp . DIV exp
+    9    | exp . EXP exp
+
+    NL     shift, and go to state 11
+    PLUS   shift, and go to state 12
+    MINUS  shift, and go to state 13
+    TIMES  shift, and go to state 14
+    DIV    shift, and go to state 15
+    EXP    shift, and go to state 16
+
+
+State 7
+
+    5 exp: exp . PLUS exp
+    6    | exp . MINUS exp
+    7    | exp . TIMES exp
+    8    | exp . DIV exp
+    9    | exp . EXP exp
+   11    | LPAREN exp . RPAREN
+
+    RPAREN  shift, and go to state 17
+    PLUS    shift, and go to state 12
+    MINUS   shift, and go to state 13
+    TIMES   shift, and go to state 14
+    DIV     shift, and go to state 15
+    EXP     shift, and go to state 16
+
+
+State 8
+
+    5 exp: exp . PLUS exp
+    6    | exp . MINUS exp
+    7    | exp . TIMES exp
+    8    | exp . DIV exp
+    9    | exp . EXP exp
+   10    | MINUS exp .
+
+    EXP  shift, and go to state 16
+
+    $default  reduce using rule 10 (exp)
+
+
+State 9
+
+    0 $accept: input $end .
+
+    $default  accept
+
+
+State 10
+
+    2 input: input line .
+
+    $default  reduce using rule 2 (input)
+
+
+State 11
+
+    3 line: exp NL .
+
+    $default  reduce using rule 3 (line)
+
+
+State 12
+
+    5 exp: exp PLUS . exp
+
+    NUM     shift, and go to state 1
+    LPAREN  shift, and go to state 2
+    MINUS   shift, and go to state 3
+
+    exp  go to state 18
+
+
+State 13
+
+    6 exp: exp MINUS . exp
+
+    NUM     shift, and go to state 1
+    LPAREN  shift, and go to state 2
+    MINUS   shift, and go to state 3
+
+    exp  go to state 19
+
+
+State 14
+
+    7 exp: exp TIMES . exp
+
+    NUM     shift, and go to state 1
+    LPAREN  shift, and go to state 2
+    MINUS   shift, and go to state 3
+
+    exp  go to state 20
+
+
+State 15
+
+    8 exp: exp DIV . exp
+
+    NUM     shift, and go to state 1
+    LPAREN  shift, and go to state 2
+    MINUS   shift, and go to state 3
+
+    exp  go to state 21
+
+
+State 16
+
+    9 exp: exp EXP . exp
+
+    NUM     shift, and go to state 1
+    LPAREN  shift, and go to state 2
+    MINUS   shift, and go to state 3
+
+    exp  go to state 22
+
+
+State 17
+
+   11 exp: LPAREN exp RPAREN .
+
+    $default  reduce using rule 11 (exp)
+
+
+State 18
+
+    5 exp: exp . PLUS exp
+    5    | exp PLUS exp .
+    6    | exp . MINUS exp
+    7    | exp . TIMES exp
+    8    | exp . DIV exp
+    9    | exp . EXP exp
+
+    TIMES  shift, and go to state 14
+    DIV    shift, and go to state 15
+    EXP    shift, and go to state 16
+
+    $default  reduce using rule 5 (exp)
+
+
+State 19
+
+    5 exp: exp . PLUS exp
+    6    | exp . MINUS exp
+    6    | exp MINUS exp .
+    7    | exp . TIMES exp
+    8    | exp . DIV exp
+    9    | exp . EXP exp
+
+    TIMES  shift, and go to state 14
+    DIV    shift, and go to state 15
+    EXP    shift, and go to state 16
+
+    $default  reduce using rule 6 (exp)
+
+
+State 20
+
+    5 exp: exp . PLUS exp
+    6    | exp . MINUS exp
+    7    | exp . TIMES exp
+    7    | exp TIMES exp .
+    8    | exp . DIV exp
+    9    | exp . EXP exp
+
+    EXP  shift, and go to state 16
+
+    $default  reduce using rule 7 (exp)
+
+
+State 21
+
+    5 exp: exp . PLUS exp
+    6    | exp . MINUS exp
+    7    | exp . TIMES exp
+    8    | exp . DIV exp
+    8    | exp DIV exp .
+    9    | exp . EXP exp
+
+    EXP  shift, and go to state 16
+
+    $default  reduce using rule 8 (exp)
+
+
+State 22
+
+    5 exp: exp . PLUS exp
+    6    | exp . MINUS exp
+    7    | exp . TIMES exp
+    8    | exp . DIV exp
+    9    | exp . EXP exp
+    9    | exp EXP exp .
+
+    EXP  shift, and go to state 16
+
+    $default  reduce using rule 9 (exp)

@@ -1,7 +1,7 @@
 // program1.cpp
 // Colton Roach
 // COSC 4785 Fall 2022
-// Program 2
+// Program 3
 // September 25, 2022
 
 #include<FlexLexer.h>
@@ -9,6 +9,9 @@
 #include<iomanip>
 #include<string>
 #include<cstring>
+#include"nodes.hpp"
+#include"program3.tab.hpp"
+#include<fstream>
 
 using namespace std;
 
@@ -17,8 +20,16 @@ void sendOutput(int, int, string, string);
 int type;
 string token;
 
+yyFlexLexer scanner;
+Node *tree;
+
 int main()
 {
+    tree = 0;
+
+    yyparse();
+
+/*
     yyFlexLexer myScanner;
     int rtn;
 
@@ -236,7 +247,7 @@ int main()
                 break;
         } 
     }
- 
+ */
     return 0;
 }
 

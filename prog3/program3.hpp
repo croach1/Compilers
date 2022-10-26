@@ -2,8 +2,8 @@
 //Colton Roach
 //September 25, 2022
 
-#ifndef PROGRAM2_HPP
-#define PROGRAM2_HPP
+#ifndef PROGRAM3_HPP
+#define PROGRAM3_HPP
 
 extern string token;
 

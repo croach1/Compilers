@@ -1,5 +1,5 @@
 /*
- program2.lpp
+ program3.lpp
  COSC 4785
  Colton Roach
  September 25, 2022
@@ -10,12 +10,19 @@
 
 using namespace std;
 
-#include "program2.hpp"
+#include "program3.hpp"
+#include "program3.tab.hpp"
+
+void yyerror(const char *string)
+{
+	cerr << string << endl;
+	return;
+}
 
 %}
 %x C_COMMENT
 
-%option outfile="program2_lex.cpp"
+%option outfile="program3_lex.cpp"
 %option noyywrap
 %option yylineno
 
@@ -23,103 +30,103 @@ using namespace std;
 %%
 
 "="     {
-            token="ASSIGN";
+            //token="ASSIGN";
             return 1;
         }
 "=="    {
-            token="EQ";
+            //token="EQ";
             return 2;
         }
 ">"     {
-            token="GT";
+            //token="GT";
             return 3;
         }
 "<"     {
-            token="LT";
+            //token="LT";
             return 4;
         }
 ">="    {
-            token="GEQ";
+            //token="GEQ";
             return 5;
         }
 "<="    {
-            token="LEQ";
+            //token="LEQ";
             return 6;
         }
 "!="    {
-            token="NEQ";
+            //token="NEQ";
             return 7;
         }
 "+"     {
-            token="PLUS";
+            //token="PLUS";
             return 8;
         }
 "-"     {
-            token="MINUS";
+            //token="MINUS";
             return 9;
         }
 "*"     {
-            token="TIMES";
+            //token="TIMES";
             return 10;
         }
 "/"     {
-            token="DIV";
+            //token="DIV";
             return 11;
         }
 "||"    {
-            token="OR";
+            //token="OR";
             return 12;
         }
 "&&"    {
-            token="AND";
+            //token="AND";
             return 13;
         }
 "{"     {
-            token="LBRACE";
+            //token="LBRACE";
             return 14;
         }
 "}"     {
-            token="RBRACE";
+            //token="RBRACE";
             return 15;
         }
 "["     {
-            token="LBRACK";
+            //token="LBRACK";
             return 16;
         }
 "]"     {
-            token="RBRACK";
+            //token="RBRACK";
             return 17;
         }
 "("     {
-            token="LPAREN";
+            //token="LPAREN";
             return 18;
         }
 ")"     {
-            token="RPAREN";
+            //token="RPAREN";
             return 19;
         }
 "."     {
-            token="DOT";
+            //token="DOT";
             return 20;
         }
 ","     {
-            token="COMMA";
+            //token="COMMA";
             return 21;
         }
 ";"     {
-            token="SEMI";
+            //token="SEMI";
             return 22;
         }
 "!"     {
-            token="NOT";
+            //token="NOT";
             return 23;
         }
 "%"     {
-            token="MOD";
+            //token="MOD";
             return 24;
         }
 \/\/.*\n  {
-            token="COMMENT";
+            //token="COMMENT";
             return 25;
         }
 "/*"    {
@@ -137,59 +144,59 @@ using namespace std;
             return 52;
         }
 "this"  {
-            token="THIS";
+            //token="THIS";
             return 27;
         }
 "if"    {
-            token="IF";
+            //token="IF";
             return 28;
         }
 "else"  {
-            token="ELSE";
+            //token="ELSE";
             return 29;
         }
 "while" {
-            token="WHILE";
+            //token="WHILE";
             return 30;
         }
 "int"   {
-            token="INT";
+            //token="INT";
             return 31;
         }
 "void"  {
-            token="VOID";
+            //token="VOID";
             return 32;
         }
 "class" {
-            token="CLASS";
+            //token="CLASS";
             return 33;
         }
 "new"   {
-            token="NEW";
+            //token="NEW";
             return 34;
         }
 "print" {
-            token="PRINT";
+            //token="PRINT";
             return 35;
         }
 "read"  {
-            token="READ";
+            //token="READ";
             return 36;
         }
 "return" {
-            token="RETURN";
+            //token="RETURN";
             return 37;
         }
 "null"  {
-            token="NULLT";
+            //token="NULLT";
             return 38;
         }
 [_a-zA-Z][_a-zA-Z0-9]*  {
-            token="IDENT";
+            //token="IDENT";
             return 39;
         }
 [+-]?[0-9]+  {
-            token="NUMBER";
+            //token="NUMBER";
             return 40;
         }
 \n      {
@@ -202,7 +209,8 @@ using namespace std;
             return 43;   
         }
 .       {
-            token="ER_CH";
-            return 45;
+		
+            //token="ER_CH";
+            //return 45;
         }
 %%

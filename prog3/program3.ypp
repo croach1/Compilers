@@ -1,0 +1,123 @@
+//program3.ypp
+//Colton Roach
+//October 18, 2022
+//COSC 4785
+
+%{
+
+#include <iostream>
+#include <FlexLexer.h>
+#include "nodes.hpp"
+
+using std::cerr;
+using std::cout;
+using std::endl;
+
+extern Node *tree;
+extern yyFlexLexer scanner;
+
+#define yylex() scanner.yylex()
+
+%}
+
+
+%union {
+    Node *ttype;
+}
+
+
+%type<ttype> program elements vardec exp newexp type simpletype bracketexps bracketexp multibrackets name
+%token<ttype> ID INT SEMI NUMBER READ LPAREN RPAREN PLUS MINUS OR TIMES DIV MOD AND EQ NE GE LE GT LT NOT NEW LBRACK RBRACK DOT THIS NULLT 
+
+
+%%
+
+program: 
+    elements{
+        tree = $1;
+        $$ = new nodeProgram($1);
+	cout << $$->getLabel();
+    }
+    | program elements{}
+;
+
+elements:
+    vardec{
+        $$ = new nodeElements($1);
+        cout << $$->getLabel() << endl;
+    }
+    | exp SEMI{}
+;
+vardec:
+    type ID SEMI{
+        $$ = new nodeVarDec($1, new nodeID($2->));
+        cout << $$->getLabel() << endl;
+    }
+    | ID ID SEMI{}
+    | type multibrackets ID SEMI{}
+    | ID multibrackets ID SEMI{}
+;
+exp:
+    name{}
+    | NUMBER{}
+    | NULLT{}
+    | READ LPAREN RPAREN{}
+    | newexp{}
+    | LPAREN exp RPAREN{}
+    | name LPAREN RPAREN{}
+    | exp PLUS exp{}
+    | exp MINUS exp{}
+    | exp OR exp{}
+    | exp TIMES exp{}
+    | exp DIV exp{}
+    | exp MOD exp{}
+    | exp AND exp{}
+    | exp EQ exp{}
+    | exp NE exp{}
+    | exp GE exp{}
+    | exp LE exp{}
+    | exp GT exp{}
+    | exp LT exp{}
+    | MINUS exp{}
+    | PLUS exp{}
+    | NOT exp{}
+;
+newexp:
+    NEW ID LPAREN RPAREN{}
+    | NEW simpletype{}
+    | NEW simpletype bracketexps{}
+    | NEW ID bracketexps{}
+    | NEW simpletype bracketexps multibrackets{}
+    | NEW ID bracketexps multibrackets{}
+;
+type:
+    simpletype{
+        $$ = new nodeType($1);
+        cout << $$->getLabel() << endl;
+    }
+;
+simpletype:
+    INT{
+        $$ = new nodeSimpleType();
+        cout << $$->getLabel() << endl;
+    }
+;
+bracketexps:
+    bracketexp{}
+    | bracketexps bracketexp{}
+;
+bracketexp:
+    LBRACK exp RBRACK{}
+;
+multibrackets:
+    LBRACK RBRACK{}
+    | multibrackets LBRACK RBRACK{}
+;
+name:
+    THIS{}
+    | ID{}
+    | name DOT ID{}
+    | name bracketexps{}
+;
+
+%%

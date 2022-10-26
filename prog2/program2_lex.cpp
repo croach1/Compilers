@@ -342,8 +342,8 @@ int yyFlexLexer::yywrap() { return 1; }
 	*yy_cp = '\0'; \
 	(yy_c_buf_p) = yy_cp;
 
-#define YY_NUM_RULES 49
-#define YY_END_OF_BUFFER 50
+#define YY_NUM_RULES 48
+#define YY_END_OF_BUFFER 49
 /* This struct is not used in this scanner,
    but its presence is necessary. */
 struct yy_trans_info
@@ -353,16 +353,16 @@ struct yy_trans_info
 	};
 static yyconst flex_int16_t yy_accept[94] =
     {   0,
-        0,    0,    0,    0,   50,   48,   46,   45,   47,   23,
-       24,   48,   18,   19,   10,    8,   21,    9,   20,   11,
-       44,   22,    4,    1,    3,   43,   16,   17,   43,   43,
-       43,   43,   43,   43,   43,   43,   43,   14,   48,   15,
-       30,   28,   30,    7,   13,   44,   26,    0,    6,    2,
-        5,   43,   43,   43,   32,   43,   43,   43,   43,   43,
-       43,   43,   43,   12,   27,    0,   25,   43,   43,   35,
-       38,   43,   43,   43,   43,   43,   43,   43,   43,   33,
-       42,   43,   40,   43,   31,   36,   43,   37,   39,   43,
-       34,   41,    0
+        0,    0,    0,    0,   49,   47,   45,   44,   46,   23,
+       24,   47,   18,   19,   10,    8,   21,    9,   20,   11,
+       43,   22,    4,    1,    3,   42,   16,   17,   42,   42,
+       42,   42,   42,   42,   42,   42,   42,   14,   47,   15,
+       29,   28,   29,    7,   13,   43,   26,    0,    6,    2,
+        5,   42,   42,   42,   31,   42,   42,   42,   42,   42,
+       42,   42,   42,   12,   27,    0,   25,   42,   42,   34,
+       37,   42,   42,   42,   42,   42,   42,   42,   42,   32,
+       41,   42,   39,   42,   30,   35,   42,   36,   38,   42,
+       33,   40,    0
 
     } ;
 
@@ -478,11 +478,11 @@ static yyconst flex_int16_t yy_chk[149] =
     } ;
 
 /* Table of booleans, true if rule could match eol. */
-static yyconst flex_int32_t yy_rule_can_match_eol[50] =
+static yyconst flex_int32_t yy_rule_can_match_eol[49] =
     {   0,
 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-    0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-    0, 0, 0, 0, 0, 1, 0, 0, 0, 0,     };
+    0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 1, 0, 0, 0, 0,     };
 
 /* The intent behind this definition is that it'll catch
  * any uses of REJECT which flex missed.
@@ -714,7 +714,7 @@ YY_RULE_SETUP
 #line 25 "program2.lpp"
 {
             token="ASSIGN";
-            return 2;
+            return 1;
         }
 	YY_BREAK
 case 2:
@@ -730,7 +730,7 @@ YY_RULE_SETUP
 #line 33 "program2.lpp"
 {
             token="GT";
-            return 2;
+            return 3;
         }
 	YY_BREAK
 case 4:
@@ -738,7 +738,7 @@ YY_RULE_SETUP
 #line 37 "program2.lpp"
 {
             token="LT";
-            return 2;
+            return 4;
         }
 	YY_BREAK
 case 5:
@@ -746,7 +746,7 @@ YY_RULE_SETUP
 #line 41 "program2.lpp"
 {
             token="GEQ";
-            return 2;
+            return 5;
         }
 	YY_BREAK
 case 6:
@@ -754,7 +754,7 @@ YY_RULE_SETUP
 #line 45 "program2.lpp"
 {
             token="LEQ";
-            return 2;
+            return 6;
         }
 	YY_BREAK
 case 7:
@@ -762,7 +762,7 @@ YY_RULE_SETUP
 #line 49 "program2.lpp"
 {
             token="NEQ";
-            return 2;
+            return 7;
         }
 	YY_BREAK
 case 8:
@@ -770,7 +770,7 @@ YY_RULE_SETUP
 #line 53 "program2.lpp"
 {
             token="PLUS";
-            return 2;
+            return 8;
         }
 	YY_BREAK
 case 9:
@@ -778,7 +778,7 @@ YY_RULE_SETUP
 #line 57 "program2.lpp"
 {
             token="MINUS";
-            return 2;
+            return 9;
         }
 	YY_BREAK
 case 10:
@@ -786,7 +786,7 @@ YY_RULE_SETUP
 #line 61 "program2.lpp"
 {
             token="TIMES";
-            return 2;
+            return 10;
         }
 	YY_BREAK
 case 11:
@@ -794,7 +794,7 @@ YY_RULE_SETUP
 #line 65 "program2.lpp"
 {
             token="DIV";
-            return 2;
+            return 11;
         }
 	YY_BREAK
 case 12:
@@ -802,7 +802,7 @@ YY_RULE_SETUP
 #line 69 "program2.lpp"
 {
             token="OR";
-            return 2;
+            return 12;
         }
 	YY_BREAK
 case 13:
@@ -810,7 +810,7 @@ YY_RULE_SETUP
 #line 73 "program2.lpp"
 {
             token="AND";
-            return 2;
+            return 13;
         }
 	YY_BREAK
 case 14:
@@ -818,7 +818,7 @@ YY_RULE_SETUP
 #line 77 "program2.lpp"
 {
             token="LBRACE";
-            return 2;
+            return 14;
         }
 	YY_BREAK
 case 15:
@@ -826,7 +826,7 @@ YY_RULE_SETUP
 #line 81 "program2.lpp"
 {
             token="RBRACE";
-            return 2;
+            return 15;
         }
 	YY_BREAK
 case 16:
@@ -834,7 +834,7 @@ YY_RULE_SETUP
 #line 85 "program2.lpp"
 {
             token="LBRACK";
-            return 2;
+            return 16;
         }
 	YY_BREAK
 case 17:
@@ -842,7 +842,7 @@ YY_RULE_SETUP
 #line 89 "program2.lpp"
 {
             token="RBRACK";
-            return 2;
+            return 17;
         }
 	YY_BREAK
 case 18:
@@ -850,7 +850,7 @@ YY_RULE_SETUP
 #line 93 "program2.lpp"
 {
             token="LPAREN";
-            return 2;
+            return 18;
         }
 	YY_BREAK
 case 19:
@@ -858,7 +858,7 @@ YY_RULE_SETUP
 #line 97 "program2.lpp"
 {
             token="RPAREN";
-            return 2;
+            return 19;
         }
 	YY_BREAK
 case 20:
@@ -866,7 +866,7 @@ YY_RULE_SETUP
 #line 101 "program2.lpp"
 {
             token="DOT";
-            return 2;
+            return 20;
         }
 	YY_BREAK
 case 21:
@@ -874,7 +874,7 @@ YY_RULE_SETUP
 #line 105 "program2.lpp"
 {
             token="COMMA";
-            return 2;
+            return 21;
         }
 	YY_BREAK
 case 22:
@@ -882,7 +882,7 @@ YY_RULE_SETUP
 #line 109 "program2.lpp"
 {
             token="SEMI";
-            return 2;
+            return 22;
         }
 	YY_BREAK
 case 23:
@@ -890,7 +890,7 @@ YY_RULE_SETUP
 #line 113 "program2.lpp"
 {
             token="NOT";
-            return 2;
+            return 23;
         }
 	YY_BREAK
 case 24:
@@ -898,7 +898,7 @@ YY_RULE_SETUP
 #line 117 "program2.lpp"
 {
             token="MOD";
-            return 2;
+            return 24;
         }
 	YY_BREAK
 case 25:
@@ -907,7 +907,7 @@ YY_RULE_SETUP
 #line 121 "program2.lpp"
 {
             token="COMMENT";
-            return 6;
+            return 25;
         }
 	YY_BREAK
 case 26:
@@ -915,183 +915,180 @@ YY_RULE_SETUP
 #line 125 "program2.lpp"
 {
             BEGIN(C_COMMENT);
+            return 50;
         }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 128 "program2.lpp"
+#line 129 "program2.lpp"
 {
             BEGIN(INITIAL);
+            return 53;
         }
 	YY_BREAK
 case 28:
 /* rule 28 can match eol */
 YY_RULE_SETUP
-#line 131 "program2.lpp"
+#line 133 "program2.lpp"
 {
+            return 51;
         }
 	YY_BREAK
 case 29:
-/* rule 29 can match eol */
 YY_RULE_SETUP
-#line 133 "program2.lpp"
+#line 136 "program2.lpp"
 {
+            return 52;
         }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 135 "program2.lpp"
+#line 139 "program2.lpp"
 {
+            token="THIS";
+            return 27;
         }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 137 "program2.lpp"
+#line 143 "program2.lpp"
 {
-            token="THIS";
-            return 2;
+            token="IF";
+            return 28;
         }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 141 "program2.lpp"
+#line 147 "program2.lpp"
 {
-            token="IF";
-            return 2;
+            token="ELSE";
+            return 29;
         }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 145 "program2.lpp"
+#line 151 "program2.lpp"
 {
-            token="ELSE";
-            return 2;
+            token="WHILE";
+            return 30;
         }
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 149 "program2.lpp"
+#line 155 "program2.lpp"
 {
-            token="WHILE";
-            return 2;
+            token="INT";
+            return 31;
         }
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 153 "program2.lpp"
+#line 159 "program2.lpp"
 {
-            token="INT";
-            return 2;
+            token="VOID";
+            return 32;
         }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 157 "program2.lpp"
+#line 163 "program2.lpp"
 {
-            token="VOID";
-            return 2;
+            token="CLASS";
+            return 33;
         }
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 161 "program2.lpp"
+#line 167 "program2.lpp"
 {
-            token="CLASS";
-            return 2;
+            token="NEW";
+            return 34;
         }
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 165 "program2.lpp"
+#line 171 "program2.lpp"
 {
-            token="NEW";
-            return 2;
+            token="PRINT";
+            return 35;
         }
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 169 "program2.lpp"
+#line 175 "program2.lpp"
 {
-            token="PRINT";
-            return 2;
+            token="READ";
+            return 36;
         }
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 173 "program2.lpp"
+#line 179 "program2.lpp"
 {
-            token="READ";
-            return 2;
+            token="RETURN";
+            return 37;
         }
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 177 "program2.lpp"
+#line 183 "program2.lpp"
 {
-            token="RETURN";
-            return 2;
+            token="NULLT";
+            return 38;
         }
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 181 "program2.lpp"
+#line 187 "program2.lpp"
 {
-            token="NULLT";
-            return 2;
+            token="IDENT";
+            return 39;
         }
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 185 "program2.lpp"
+#line 191 "program2.lpp"
 {
-            token="IDENT";
-            return 1;
+            token="NUMBER";
+            return 40;
         }
 	YY_BREAK
 case 44:
+/* rule 44 can match eol */
 YY_RULE_SETUP
-#line 189 "program2.lpp"
+#line 195 "program2.lpp"
 {
-            token="NUMBER";
-            return 1;
+            return 41;
         }
 	YY_BREAK
 case 45:
-/* rule 45 can match eol */
 YY_RULE_SETUP
-#line 193 "program2.lpp"
+#line 198 "program2.lpp"
 {
-            return 5;
+            return 42;
         }
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 196 "program2.lpp"
+#line 201 "program2.lpp"
 {
-            return 4;
+            return 43;   
         }
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 199 "program2.lpp"
+#line 204 "program2.lpp"
 {
-            return 3;   
+            token="ER_CH";
+            return 45;
         }
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 202 "program2.lpp"
-{
-            token="ER_CH";
-            return -9999;
-        }
-	YY_BREAK
-case 49:
-YY_RULE_SETUP
-#line 206 "program2.lpp"
+#line 208 "program2.lpp"
 ECHO;
 	YY_BREAK
-#line 1095 "program2_lex.cpp"
+#line 1092 "program2_lex.cpp"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(C_COMMENT):
 	yyterminate();
@@ -2056,7 +2053,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 206 "program2.lpp"
+#line 208 "program2.lpp"
 
 
 

@@ -24,7 +24,7 @@ using namespace std;
 
 "="     {
             token="ASSIGN";
-            return 1;
+            return 2;
         }
 "=="    {
             token="EQ";
@@ -32,177 +32,175 @@ using namespace std;
         }
 ">"     {
             token="GT";
-            return 3;
+            return 2;
         }
 "<"     {
             token="LT";
-            return 4;
+            return 2;
         }
 ">="    {
             token="GEQ";
-            return 5;
+            return 2;
         }
 "<="    {
             token="LEQ";
-            return 6;
+            return 2;
         }
 "!="    {
             token="NEQ";
-            return 7;
+            return 2;
         }
 "+"     {
             token="PLUS";
-            return 8;
+            return 2;
         }
 "-"     {
             token="MINUS";
-            return 9;
+            return 2;
         }
 "*"     {
             token="TIMES";
-            return 10;
+            return 2;
         }
 "/"     {
             token="DIV";
-            return 11;
+            return 2;
         }
 "||"    {
             token="OR";
-            return 12;
+            return 2;
         }
 "&&"    {
             token="AND";
-            return 13;
+            return 2;
         }
 "{"     {
             token="LBRACE";
-            return 14;
+            return 2;
         }
 "}"     {
             token="RBRACE";
-            return 15;
+            return 2;
         }
 "["     {
             token="LBRACK";
-            return 16;
+            return 2;
         }
 "]"     {
             token="RBRACK";
-            return 17;
+            return 2;
         }
 "("     {
             token="LPAREN";
-            return 18;
+            return 2;
         }
 ")"     {
             token="RPAREN";
-            return 19;
+            return 2;
         }
 "."     {
             token="DOT";
-            return 20;
+            return 2;
         }
 ","     {
             token="COMMA";
-            return 21;
+            return 2;
         }
 ";"     {
             token="SEMI";
-            return 22;
+            return 2;
         }
 "!"     {
             token="NOT";
-            return 23;
+            return 2;
         }
 "%"     {
             token="MOD";
-            return 24;
+            return 2;
         }
 \/\/.*\n  {
             token="COMMENT";
-            return 25;
+            return 6;
         }
 "/*"    {
             BEGIN(C_COMMENT);
-            return 50;
         }
 <C_COMMENT>"*/" {
             BEGIN(INITIAL);
-            return 53;
         }
 <C_COMMENT>\n {
-            return 51;
+        }
+<C_COMMENT>\n {
         }
 <C_COMMENT>.  {
-            return 52;
         }
 "this"  {
             token="THIS";
-            return 27;
+            return 2;
         }
 "if"    {
             token="IF";
-            return 28;
+            return 2;
         }
 "else"  {
             token="ELSE";
-            return 29;
+            return 2;
         }
 "while" {
             token="WHILE";
-            return 30;
+            return 2;
         }
 "int"   {
             token="INT";
-            return 31;
+            return 2;
         }
 "void"  {
             token="VOID";
-            return 32;
+            return 2;
         }
 "class" {
             token="CLASS";
-            return 33;
+            return 2;
         }
 "new"   {
             token="NEW";
-            return 34;
+            return 2;
         }
 "print" {
             token="PRINT";
-            return 35;
+            return 2;
         }
 "read"  {
             token="READ";
-            return 36;
+            return 2;
         }
 "return" {
             token="RETURN";
-            return 37;
+            return 2;
         }
 "null"  {
             token="NULLT";
-            return 38;
+            return 2;
         }
 [_a-zA-Z][_a-zA-Z0-9]*  {
             token="IDENT";
-            return 39;
+            return 1;
         }
 [+-]?[0-9]+  {
             token="NUMBER";
-            return 40;
+            return 1;
         }
 \n      {
-            return 41;
+            return 5;
         }
 \t      {
-            return 42;
+            return 4;
         }
 " "     {
-            return 43;   
+            return 3;   
         }
 .       {
             token="ER_CH";
-            return 45;
+            return -9999;
         }
 %%
