@@ -1,0 +1,53 @@
+<program> -> <elements>
+  <exp> --> <name>
+    <name> --> ID DOT ID
+      ID --> a
+      ID --> obj
+    <name> --> <name> DOT ID
+      ID --> b
+    <name> --> <name> DOT ID
+      ID --> c
+<program> -> <program> <elements>
+  <exp> --> NUMBER
+    NUMBER --> 45
+<program> -> <program> <elements>
+  <exp> --> null
+<program> -> <program> <elements>
+  <exp> -> READ LPAREN RPAREN
+<program> -> <program> <elements>
+  <exp> --> <name> LPAREN RPAREN
+    ID --> func
+<program> -> <program> <elements>
+  <exp> --> <name> LPAREN RPAREN
+    <name> --> ID DOT ID
+      ID --> a
+      ID --> b
+    <name> --> <name> DOT ID
+      ID --> func
+<program> -> <program> <elements>
+  <exp> --> <exp> + <exp>
+    <exp> --> <name>
+      ID --> a
+    <exp> --> ( <exp> )
+      <exp> --> <exp> + <exp>
+        <exp> --> <name>
+          ID --> b
+        <exp> --> <name>
+          ID --> c
+<program> -> <program> <elements>
+  <exp> --> <name>
+    <name> --> ID DOT ID
+      ID --> a
+      ID --> b
+    <name> --> <name> DOT ID
+      ID --> c
+    <bracketexp> --> [ <exp> ]
+      <exp> --> NUMBER
+        NUMBER --> 5
+<program> -> <program> <elements>
+  <exp> --> <name> <bracketexps>
+    <name> -- ID
+      ID --> X
+    <bracketexp> --> [ <exp> ]
+      <exp> --> NUMBER
+        NUMBER --> 2

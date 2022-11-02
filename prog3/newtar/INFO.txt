@@ -1,0 +1,30 @@
+Colton, 
+
+I made several changes. 
+
+First, you need to only use pointers to Node NOT the individual types. If you
+need to access a specific type, then use a type cast. Otherwise the functions
+that are part of Node should be useful enough. On that same topic, you do not
+need all the 'setters' and 'getters' because you really are NOT going to want to
+access/change those things individually. Each type of node should know how to
+'print' itself and as long as the print function in the Node class is virtual
+you get the correct results as long as you override print().
+
+
+I 'fixed' the lpp file to return the correct values to yyparse(). 
+
+I moved the declaration of yyerror() to the ypp file and defined it correctly. I
+deleted all the 'old' stuff from main(). Did not really test anything, just got
+it to compile. 
+
+Oh, I did do something 'big' to the ypp file. First the tokens like INT and
+NULLT do not need to hae a type associated with them. However, that is a problem
+with NUMBER and ID. I added two non-terminals, 'ident' and 'number' and if you look
+at the end of the rules in the ypp file you will see where and why I did that.
+This way, you can get the correct information stored into a Node (of some kind)
+and then have the appropriate $n at a rule be that node for use. 
+
+Hope all that made sense. You have to make sure this actually handles the input
+and at some point fix the shift-reduce issues.
+
+

@@ -1,0 +1,116 @@
+<program> -> <elements>
+  <exp> --> <exp> + <exp>
+    <exp> --> NUMBER
+      NUMBER --> 4
+    <exp> --> NUMBER
+      NUMBER --> 5
+<program> -> <program> <elements>
+  <exp> --> <exp> - <exp>
+    <exp> --> NUMBER
+      NUMBER --> 4
+    <exp> --> NUMBER
+      NUMBER --> 5
+<program> -> <program> <elements>
+  <exp> --> <exp> || <exp>
+    <exp> --> NUMBER
+      NUMBER --> 6
+    <exp> --> NUMBER
+      NUMBER --> 7
+<program> -> <program> <elements>
+  <exp> --> <exp> % <exp>
+    <exp> --> NUMBER
+      NUMBER --> 1
+    <exp> --> NUMBER
+      NUMBER --> 3
+<program> -> <program> <elements>
+  <exp> --> <exp> * <exp>
+    <exp> --> NUMBER
+      NUMBER --> 8
+    <exp> --> NUMBER
+      NUMBER --> 5
+<program> -> <program> <elements>
+  <exp> --> <exp> / <exp>
+    <exp> --> NUMBER
+      NUMBER --> 4
+    <exp> --> NUMBER
+      NUMBER --> 6
+<program> -> <program> <elements>
+  <exp> --> <exp> && <exp>
+    <exp> --> NUMBER
+      NUMBER --> 5
+    <exp> --> NUMBER
+      NUMBER --> 6
+<program> -> <program> <elements>
+  <exp> --> <exp> > <exp>
+    <exp> --> <name>
+      ID --> a
+    <exp> --> <name>
+      ID --> b
+<program> -> <program> <elements>
+  <exp> --> <exp> < <exp>
+    <exp> --> <name>
+      ID --> a
+    <exp> --> <name>
+      ID --> c
+<program> -> <program> <elements>
+  <exp> --> <exp> >= <exp>
+    <exp> --> <name>
+      ID --> s
+    <exp> --> <name>
+      ID --> g
+<program> -> <program> <elements>
+  <exp> --> <exp> <= <exp>
+    <exp> --> <name>
+      ID --> s
+    <exp> --> <name>
+      ID --> f
+<program> -> <program> <elements>
+  <exp> --> <exp> != <exp>
+    <exp> --> <name>
+      ID --> t
+    <exp> --> <name>
+      ID --> u
+<program> -> <program> <elements>
+  <exp> --> <exp> == <exp>
+    <exp> --> <name>
+      ID --> u
+    <exp> --> <name>
+      ID --> v
+<program> -> <program> <elements>
+  <exp> --> ! <exp>
+    <exp> --> <name>
+      ID --> a
+<program> -> <program> <elements>
+  <exp> --> - <exp>
+    <exp> --> <name>
+      ID --> b
+<program> -> <program> <elements>
+  <exp> --> + <exp>
+    <exp> --> <name>
+      ID --> c
+<program> -> <program> <elements>
+  <exp> --> <exp> + <exp>
+    <exp> --> <name>
+      ID --> a
+    <exp> --> <exp> / <exp>
+      <exp> --> <exp> * <exp>
+        <exp> --> <name>
+          ID --> b
+        <exp> --> <name>
+          ID --> c
+      <exp> --> <name>
+        ID --> d
+<program> -> <program> <elements>
+  <exp> --> <exp> - <exp>
+    <exp> --> <name>
+      ID --> a
+    <exp> --> - <exp>
+      <exp> --> <name>
+        ID --> b
+<program> -> <program> <elements>
+  <exp> --> <exp> - <exp>
+    <exp> --> <name>
+      ID --> a
+    <exp> --> + <exp>
+      <exp> --> <name>
+        ID --> b
