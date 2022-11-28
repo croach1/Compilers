@@ -1,4 +1,4 @@
 int x;
 int y;
-&$^@
+read{};
 int z;
