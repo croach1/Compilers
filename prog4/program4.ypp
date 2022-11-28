@@ -1,0 +1,382 @@
+//program4.ypp
+//Colton Roach
+//November 3, 2022
+//COSC 4785
+
+%{
+
+#include <iostream>
+#include <FlexLexer.h>
+#include "nodes.hpp"
+#include <stdlib.h>
+
+using std::cerr;
+using std::cout;
+using std::endl;
+
+extern Node *tree;
+extern yyFlexLexer scanner;
+
+#define yylex() scanner.yylex()
+
+void yyerror(const char* str)
+{
+  cerr << str << endl;
+}
+
+%}
+
+
+%union {
+    Node *ttype;
+}
+
+
+%type<ttype> program classDeclaration classBody variableDeclarations vardec type
+%type<ttype> simpleType constructorDeclarations consdec methodDeclarations methdec
+%type<ttype> paramList parameter block localVariableDeclarations statements 
+%type<ttype> statement name argList conditionalStatement optionalExpression expression
+%type<ttype> newExpression unaryOp relationOp sumOp productOp ident number
+%token INT ID 
+%token NUMBER READ LPAREN RPAREN ASSIGN
+%token NEW THIS NULLT SEMI
+%token LBRACE RBRACE DOT COMMA
+%token IF WHILE VOID CLASS PRINT RETURN
+%token EQ NE GE LE GT LT NOT 
+%token PLUS MINUS OR 
+%token TIMES DIV MOD AND
+%token THEN ELSE
+%token LBRACK RBRACK
+
+%%
+
+program: 
+    classDeclaration{
+        $$ = new nodeProgram($1);
+	tree = $$;
+    }
+    | program classDeclaration{
+	$$ = new nodeProgram($1, $2);
+	tree = $$;
+    }
+;
+classDeclaration:
+    CLASS ident classBody{
+        $$ = new nodeClassDeclaration($2, $3);
+    }
+;
+classBody:
+    LBRACE RBRACE{
+        $$ = new nodeClassBody(1);
+    }
+    | LBRACE variableDeclarations RBRACE{
+        $$ = new nodeClassBody($2, 2);
+    }
+    | LBRACE constructorDeclarations RBRACE{
+        $$ = new nodeClassBody($2, 3);
+    }
+    | LBRACE methodDeclarations RBRACE{
+        $$ = new nodeClassBody($2, 4);
+    }
+    | LBRACE variableDeclarations constructorDeclarations RBRACE{
+        $$ = new nodeClassBody($2, $3, 5);
+    }
+    | LBRACE variableDeclarations methodDeclarations RBRACE{
+        $$ = new nodeClassBody($2, $3, 6);
+    }
+    | LBRACE constructorDeclarations methodDeclarations RBRACE{
+        $$ = new nodeClassBody($2, $3, 7);
+    }
+    | LBRACE variableDeclarations constructorDeclarations methodDeclarations RBRACE{
+        $$ = new nodeClassBody($2, $3, $4, 8);
+    }
+;
+variableDeclarations:
+    vardec{
+        $$ = new nodeVariableDeclarations($1);
+    }
+    | variableDeclarations vardec{
+        $$ = new nodeVariableDeclarations($1, $2);
+    }
+;
+vardec:
+    type ident SEMI{
+        $$ = new nodeVarDec($1, $2, 1);
+    }
+;
+type:
+    simpleType{
+        $$ = new nodeType($1, 1);
+    }
+    | type LBRACK RBRACK{
+        $$ = new nodeType($1, 2);
+    }
+;
+simpleType:
+    INT{
+        $$ = new nodeSimpleType();
+    }
+    | ident{
+        $$ = new nodeSimpleType($1);
+    }
+;
+constructorDeclarations:
+    consdec{
+        $$ = new nodeConstructorDeclarations($1);
+    }
+    | constructorDeclarations consdec{
+        $$ = new nodeConstructorDeclarations($1, $2);
+    }
+;
+consdec:
+    ident LPAREN paramList RPAREN block{
+        $$ = new nodeConsDec($1, $3, $5);
+    }
+;
+methodDeclarations:
+    methdec{
+        $$ = new nodeMethodDeclarations($1);
+    }
+    | methodDeclarations methdec{
+        $$ = new nodeMethodDeclarations($2, $1);
+    }
+;
+methdec:
+    type ident LPAREN paramList RPAREN block{
+        $$ = new nodeMethDec($1, $2, $4, $6);
+    }
+;
+/*
+resultType:
+    type{
+        $$ = new nodeResultType($1);
+    }
+    | VOID{
+        $$ = new nodeResultType();
+    }
+;
+*/
+paramList:
+    %empty{
+        $$ = new nodeParameterList();
+    }
+    | parameter{
+        $$ = new nodeParameterList($1);
+    }
+    | paramList COMMA parameter{
+        $$ = new nodeParameterList($1, $3);
+    }
+;
+parameter:
+    type ident{
+        $$ = new nodeParameter($1, $2);
+    }
+;
+block:
+    LBRACE RBRACE{
+        $$ = new nodeBlock(1);
+    }
+    | LBRACE localVariableDeclarations RBRACE{
+        $$ = new nodeBlock($2, 2);
+    }
+    | LBRACE statements RBRACE{
+        $$ = new nodeBlock($2, 3);
+    }
+    | LBRACE localVariableDeclarations statements RBRACE{
+        $$ = new nodeBlock($2, $3, 4);
+    }
+;
+localVariableDeclarations:
+    vardec{
+        $$ = new nodeLocalVariableDeclarations($1);
+    }
+    | localVariableDeclarations vardec{
+        $$ = new nodeLocalVariableDeclarations($2, $1);
+    }
+;
+statements:
+    statement{
+        $$ = new nodeStatements($1, 1);
+    }
+    | statements statement{
+        $$ = new nodeStatements($2, $1, 2);
+    }
+;
+statement:
+    SEMI{
+        $$ = new nodeStatement(1);
+    }
+    | name ASSIGN expression SEMI{
+        $$ = new nodeStatement($1, $3, 2);
+    }
+    | name LPAREN argList RPAREN SEMI{
+        $$ = new nodeStatement($1, $3, 3);
+    }
+    | WHILE LPAREN expression RPAREN statement{
+        $$ = new nodeStatement($3, $5, 6);
+    }
+    | PRINT LPAREN argList RPAREN SEMI{
+        $$ = new nodeStatement($3, 4);
+    }
+    | conditionalStatement{
+        $$ = new nodeStatement($1, 5);
+    }
+    | RETURN optionalExpression SEMI{
+        $$ = new nodeStatement($2, 7);
+    }
+    | block{
+        $$ = new nodeStatement($1, 8);
+    }
+;
+name:
+    THIS{
+        $$ = new nodeName(1);
+    }
+    | ident{
+        $$ = new nodeName($1, 2);
+    }
+    | name DOT ident{
+        $$ = new nodeName($1, $3, 3);
+    }
+    | name LBRACK expression RBRACK{
+        $$ = new nodeName($1, $3, 4);
+    }
+;
+argList:
+    %empty{
+        $$ = new nodeArgList();
+    }
+    | expression{
+        $$ = new nodeArgList($1);
+    }
+    | argList COMMA expression{
+        $$ = new nodeArgList($1, $3);
+    }
+;
+conditionalStatement:
+    IF LPAREN expression RPAREN statement{
+        $$ = new nodeConState($3, $5, 1);
+    }
+    | IF LPAREN expression RPAREN statement ELSE statement{
+        $$ = new nodeConState($3, $5, $7, 2);
+    }
+;
+optionalExpression:
+    %empty{
+        $$ = new nodeOpExp();
+    }
+    | expression{
+        $$ = new nodeOpExp($1);
+    }
+;
+expression:
+    name{
+        $$ = new nodeExpression($1, 1);
+    }
+    | number{
+        $$ = new nodeExpression($1, 2);
+    }
+    | NULLT{
+        $$ = new nodeExpression(3);
+    }
+    | name LPAREN argList RPAREN{
+        $$ = new nodeExpression($1, $3, 4);
+    }
+    | READ LPAREN RPAREN{
+        $$ = new nodeExpression(5);
+    }
+    | newExpression{
+        $$ = new nodeExpression(6);
+    }
+    | unaryOp expression{
+        $$ = new nodeExpression($1, $2, 7);
+    }
+    | expression relationOp expression{
+        $$ = new nodeExpression($1, $2, $3, 8);
+    }
+    | expression sumOp expression{
+        $$ = new nodeExpression($1, $2, $3, 9);
+    }
+    | expression productOp expression{
+        $$ = new nodeExpression($1, $2, $3, 10);
+    }
+    | LPAREN expression RPAREN{
+        $$ = new nodeExpression($2, 11);
+    }
+;
+newExpression:
+    NEW ident LPAREN argList RPAREN{
+        $$ = new nodeExpression($2, $4, 1);
+    }
+    | NEW simpleType LBRACK expression RBRACK LBRACK RBRACK{
+        $$ = new nodeExpression($2, $4, 2);
+    }
+;
+unaryOp:
+    PLUS{
+        $$ = new nodeUnaryOp(1);
+    }
+    | MINUS{
+        $$ = new nodeUnaryOp(2);
+    }
+    | NOT{
+        $$ = new nodeUnaryOp(3);
+    }
+;
+relationOp:
+    EQ{
+        $$ = new nodeRelationOp(1);
+    }
+    | NE{
+        $$ = new nodeRelationOp(2);
+    }
+    | LE{
+        $$ = new nodeRelationOp(3);
+    }
+    | GE{
+        $$ = new nodeRelationOp(4);
+    }
+    | LT{
+        $$ = new nodeRelationOp(5);
+    }
+    | GT{
+        $$ = new nodeRelationOp(6);
+    }
+;
+sumOp:
+    PLUS{
+        $$ = new nodeSumOp(1);
+    }
+    | MINUS{
+        $$ = new nodeSumOp(2);
+    }
+    | OR{
+        $$ = new nodeSumOp(3);
+    }
+;
+productOp:
+    TIMES{
+        $$ = new nodeProductOp(1);
+    }
+    | DIV{
+        $$ = new nodeProductOp(2);
+    }
+    | MOD{
+        $$ = new nodeProductOp(3);
+    }
+    | AND{
+        $$ = new nodeProductOp(4);
+    }
+;
+ident: 
+    ID { 
+        $$=new nodeID(scanner.YYText());
+    }
+;
+number: 
+    NUMBER { 
+        $$=new nodeNum(atoi(scanner.YYText()));
+    }
+;
+
+%%
