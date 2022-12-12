@@ -1,0 +1,39 @@
+/* 
+ * This is a basic input file for the 4th program that will be their compiler.
+ * It does not test everything just has a single class with a constructor and
+ * a method
+ */
+
+class foo {
+
+  int a;
+  int b;
+  int c;
+    
+  foo()
+  {
+     int d;
+     int e;
+     int f;
+     this.a = 5;
+  }
+  int boo(int g, int h, foo i)
+  {
+    foo j;
+    int k;
+    int l;
+
+    b=a;
+    return 1;
+  }
+
+}
+
+class bean {
+  int x;
+  foo y;
+}
+
+class test {
+  int z;
+}

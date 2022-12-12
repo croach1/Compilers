@@ -1,0 +1,3177 @@
+Terminals unused in grammar
+
+   THEN
+
+
+State 82 conflicts: 1 reduce/reduce
+State 185 conflicts: 1 shift/reduce
+
+
+Grammar
+
+    0 $accept: program $end
+
+    1 program: classDeclaration
+    2        | program classDeclaration
+
+    3 classDeclaration: CLASS ident classBody
+
+    4 classBody: LBRACE RBRACE
+    5          | LBRACE classVariableDeclarations RBRACE
+    6          | LBRACE constructorDeclarations RBRACE
+    7          | LBRACE methodDeclarations RBRACE
+    8          | LBRACE classVariableDeclarations constructorDeclarations RBRACE
+    9          | LBRACE classVariableDeclarations methodDeclarations RBRACE
+   10          | LBRACE constructorDeclarations methodDeclarations RBRACE
+   11          | LBRACE classVariableDeclarations constructorDeclarations methodDeclarations RBRACE
+
+   12 classVariableDeclarations: vardec
+   13                          | classVariableDeclarations vardec
+
+   14 constructorVariableDeclarations: vardec
+   15                                | constructorVariableDeclarations vardec
+
+   16 methodVariableDeclarations: vardec
+   17                           | methodVariableDeclarations vardec
+
+   18 blockVariableDeclarations: vardec
+   19                          | blockVariableDeclarations vardec
+
+   20 vardec: type ident SEMI
+
+   21 type: simpleType
+   22     | type LBRACK RBRACK
+
+   23 simpleType: INT
+   24           | ident
+
+   25 constructorDeclarations: consdec
+   26                        | constructorDeclarations consdec
+
+   27 consdec: ident LPAREN consParamList RPAREN constructorBlock
+
+   28 methodDeclarations: methdec
+   29                   | methodDeclarations methdec
+
+   30 methdec: type ident LPAREN methParamList RPAREN methodBlock
+   31        | VOID ident LPAREN methParamList RPAREN methodBlock
+
+   32 consParamList: %empty
+   33              | parameter
+   34              | consParamList COMMA parameter
+
+   35 methParamList: %empty
+   36              | parameter
+   37              | methParamList COMMA parameter
+
+   38 parameter: type ident
+
+   39 constructorBlock: LBRACE RBRACE
+   40                 | LBRACE constructorVariableDeclarations RBRACE
+   41                 | LBRACE statements RBRACE
+   42                 | LBRACE constructorVariableDeclarations statements RBRACE
+
+   43 methodBlock: LBRACE RBRACE
+   44            | LBRACE methodVariableDeclarations RBRACE
+   45            | LBRACE statements RBRACE
+   46            | LBRACE methodVariableDeclarations statements RBRACE
+
+   47 subBlock: LBRACE RBRACE
+   48         | LBRACE blockVariableDeclarations RBRACE
+   49         | LBRACE statements RBRACE
+   50         | LBRACE blockVariableDeclarations statements RBRACE
+
+   51 statements: statement
+   52           | statements statement
+
+   53 statement: SEMI
+   54          | name ASSIGN expression SEMI
+   55          | name LPAREN argList RPAREN SEMI
+   56          | WHILE LPAREN expression RPAREN statement
+   57          | PRINT LPAREN argList RPAREN SEMI
+   58          | conditionalStatement
+   59          | RETURN optionalExpression SEMI
+   60          | subBlock
+
+   61 name: THIS
+   62     | ident
+   63     | name DOT ident
+   64     | name LBRACK expression RBRACK
+
+   65 argList: %empty
+   66        | expression
+   67        | argList COMMA expression
+
+   68 conditionalStatement: IF LPAREN expression RPAREN statement
+   69                     | IF LPAREN expression RPAREN statement ELSE statement
+
+   70 optionalExpression: %empty
+   71                   | expression
+
+   72 expression: name
+   73           | number
+   74           | NULLT
+   75           | name LPAREN argList RPAREN
+   76           | READ LPAREN RPAREN
+   77           | newExpression
+   78           | PLUS expression
+   79           | MINUS expression
+   80           | NOT expression
+   81           | expression EQ expression
+   82           | expression NE expression
+   83           | expression LE expression
+   84           | expression GE expression
+   85           | expression LT expression
+   86           | expression GT expression
+   87           | expression PLUS expression
+   88           | expression MINUS expression
+   89           | expression OR expression
+   90           | expression TIMES expression
+   91           | expression DIV expression
+   92           | expression MOD expression
+   93           | LPAREN expression RPAREN
+   94           | expression AND expression
+
+   95 newExpression: NEW ident LPAREN argList RPAREN
+   96              | NEW simpleType brackExpressions bracks
+   97              | NEW simpleType brackExpressions
+
+   98 brackExpressions: LBRACK expression RBRACK
+   99                 | brackExpressions LBRACK expression RBRACK
+
+  100 bracks: LBRACK RBRACK
+  101       | bracks LBRACK RBRACK
+
+  102 ident: ID
+
+  103 number: NUMBER
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+INT (258) 23
+ID (259) 102
+NUMBER (260) 103
+READ (261) 76
+LPAREN (262) 27 30 31 55 56 57 68 69 75 76 93 95
+RPAREN (263) 27 30 31 55 56 57 68 69 75 76 93 95
+ASSIGN (264) 54
+NEW (265) 95 96 97
+THIS (266) 61
+NULLT (267) 74
+SEMI (268) 20 53 54 55 57 59
+LBRACE (269) 4 5 6 7 8 9 10 11 39 40 41 42 43 44 45 46 47 48 49 50
+RBRACE (270) 4 5 6 7 8 9 10 11 39 40 41 42 43 44 45 46 47 48 49 50
+DOT (271) 63
+COMMA (272) 34 37 67
+IF (273) 68 69
+WHILE (274) 56
+VOID (275) 31
+CLASS (276) 3
+PRINT (277) 57
+RETURN (278) 59
+THEN (279)
+ELSE (280) 69
+LBRACK (281) 22 64 98 99 100 101
+RBRACK (282) 22 64 98 99 100 101
+EQ (283) 81
+NE (284) 82
+GE (285) 84
+LE (286) 83
+GT (287) 86
+LT (288) 85
+TIMES (289) 90
+DIV (290) 91
+MOD (291) 92
+AND (292) 94
+OR (293) 89
+PLUS (294) 78 87
+MINUS (295) 79 88
+NOT (296) 80
+
+
+Nonterminals, with rules where they appear
+
+$accept (42)
+    on left: 0
+program (43)
+    on left: 1 2, on right: 0 2
+classDeclaration (44)
+    on left: 3, on right: 1 2
+classBody (45)
+    on left: 4 5 6 7 8 9 10 11, on right: 3
+classVariableDeclarations (46)
+    on left: 12 13, on right: 5 8 9 11 13
+constructorVariableDeclarations (47)
+    on left: 14 15, on right: 15 40 42
+methodVariableDeclarations (48)
+    on left: 16 17, on right: 17 44 46
+blockVariableDeclarations (49)
+    on left: 18 19, on right: 19 48 50
+vardec (50)
+    on left: 20, on right: 12 13 14 15 16 17 18 19
+type (51)
+    on left: 21 22, on right: 20 22 30 38
+simpleType (52)
+    on left: 23 24, on right: 21 96 97
+constructorDeclarations (53)
+    on left: 25 26, on right: 6 8 10 11 26
+consdec (54)
+    on left: 27, on right: 25 26
+methodDeclarations (55)
+    on left: 28 29, on right: 7 9 10 11 29
+methdec (56)
+    on left: 30 31, on right: 28 29
+consParamList (57)
+    on left: 32 33 34, on right: 27 34
+methParamList (58)
+    on left: 35 36 37, on right: 30 31 37
+parameter (59)
+    on left: 38, on right: 33 34 36 37
+constructorBlock (60)
+    on left: 39 40 41 42, on right: 27
+methodBlock (61)
+    on left: 43 44 45 46, on right: 30 31
+subBlock (62)
+    on left: 47 48 49 50, on right: 60
+statements (63)
+    on left: 51 52, on right: 41 42 45 46 49 50 52
+statement (64)
+    on left: 53 54 55 56 57 58 59 60, on right: 51 52 56 68 69
+name (65)
+    on left: 61 62 63 64, on right: 54 55 63 64 72 75
+argList (66)
+    on left: 65 66 67, on right: 55 57 67 75 95
+conditionalStatement (67)
+    on left: 68 69, on right: 58
+optionalExpression (68)
+    on left: 70 71, on right: 59
+expression (69)
+    on left: 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89
+    90 91 92 93 94, on right: 54 56 64 66 67 68 69 71 78 79 80 81 82
+    83 84 85 86 87 88 89 90 91 92 93 94 98 99
+newExpression (70)
+    on left: 95 96 97, on right: 77
+brackExpressions (71)
+    on left: 98 99, on right: 96 97 99
+bracks (72)
+    on left: 100 101, on right: 96 101
+ident (73)
+    on left: 102, on right: 3 20 24 27 30 31 38 62 63 95
+number (74)
+    on left: 103, on right: 73
+
+
+State 0
+
+    0 $accept: . program $end
+
+    CLASS  shift, and go to state 1
+
+    program           go to state 2
+    classDeclaration  go to state 3
+
+
+State 1
+
+    3 classDeclaration: CLASS . ident classBody
+
+    ID  shift, and go to state 4
+
+    ident  go to state 5
+
+
+State 2
+
+    0 $accept: program . $end
+    2 program: program . classDeclaration
+
+    $end   shift, and go to state 6
+    CLASS  shift, and go to state 1
+
+    classDeclaration  go to state 7
+
+
+State 3
+
+    1 program: classDeclaration .
+
+    $default  reduce using rule 1 (program)
+
+
+State 4
+
+  102 ident: ID .
+
+    $default  reduce using rule 102 (ident)
+
+
+State 5
+
+    3 classDeclaration: CLASS ident . classBody
+
+    LBRACE  shift, and go to state 8
+
+    classBody  go to state 9
+
+
+State 6
+
+    0 $accept: program $end .
+
+    $default  accept
+
+
+State 7
+
+    2 program: program classDeclaration .
+
+    $default  reduce using rule 2 (program)
+
+
+State 8
+
+    4 classBody: LBRACE . RBRACE
+    5          | LBRACE . classVariableDeclarations RBRACE
+    6          | LBRACE . constructorDeclarations RBRACE
+    7          | LBRACE . methodDeclarations RBRACE
+    8          | LBRACE . classVariableDeclarations constructorDeclarations RBRACE
+    9          | LBRACE . classVariableDeclarations methodDeclarations RBRACE
+   10          | LBRACE . constructorDeclarations methodDeclarations RBRACE
+   11          | LBRACE . classVariableDeclarations constructorDeclarations methodDeclarations RBRACE
+
+    INT     shift, and go to state 10
+    ID      shift, and go to state 4
+    RBRACE  shift, and go to state 11
+    VOID    shift, and go to state 12
+
+    classVariableDeclarations  go to state 13
+    vardec                     go to state 14
+    type                       go to state 15
+    simpleType                 go to state 16
+    constructorDeclarations    go to state 17
+    consdec                    go to state 18
+    methodDeclarations         go to state 19
+    methdec                    go to state 20
+    ident                      go to state 21
+
+
+State 9
+
+    3 classDeclaration: CLASS ident classBody .
+
+    $default  reduce using rule 3 (classDeclaration)
+
+
+State 10
+
+   23 simpleType: INT .
+
+    $default  reduce using rule 23 (simpleType)
+
+
+State 11
+
+    4 classBody: LBRACE RBRACE .
+
+    $default  reduce using rule 4 (classBody)
+
+
+State 12
+
+   31 methdec: VOID . ident LPAREN methParamList RPAREN methodBlock
+
+    ID  shift, and go to state 4
+
+    ident  go to state 22
+
+
+State 13
+
+    5 classBody: LBRACE classVariableDeclarations . RBRACE
+    8          | LBRACE classVariableDeclarations . constructorDeclarations RBRACE
+    9          | LBRACE classVariableDeclarations . methodDeclarations RBRACE
+   11          | LBRACE classVariableDeclarations . constructorDeclarations methodDeclarations RBRACE
+   13 classVariableDeclarations: classVariableDeclarations . vardec
+
+    INT     shift, and go to state 10
+    ID      shift, and go to state 4
+    RBRACE  shift, and go to state 23
+    VOID    shift, and go to state 12
+
+    vardec                   go to state 24
+    type                     go to state 15
+    simpleType               go to state 16
+    constructorDeclarations  go to state 25
+    consdec                  go to state 18
+    methodDeclarations       go to state 26
+    methdec                  go to state 20
+    ident                    go to state 21
+
+
+State 14
+
+   12 classVariableDeclarations: vardec .
+
+    $default  reduce using rule 12 (classVariableDeclarations)
+
+
+State 15
+
+   20 vardec: type . ident SEMI
+   22 type: type . LBRACK RBRACK
+   30 methdec: type . ident LPAREN methParamList RPAREN methodBlock
+
+    ID      shift, and go to state 4
+    LBRACK  shift, and go to state 27
+
+    ident  go to state 28
+
+
+State 16
+
+   21 type: simpleType .
+
+    $default  reduce using rule 21 (type)
+
+
+State 17
+
+    6 classBody: LBRACE constructorDeclarations . RBRACE
+   10          | LBRACE constructorDeclarations . methodDeclarations RBRACE
+   26 constructorDeclarations: constructorDeclarations . consdec
+
+    INT     shift, and go to state 10
+    ID      shift, and go to state 4
+    RBRACE  shift, and go to state 29
+    VOID    shift, and go to state 12
+
+    type                go to state 30
+    simpleType          go to state 16
+    consdec             go to state 31
+    methodDeclarations  go to state 32
+    methdec             go to state 20
+    ident               go to state 21
+
+
+State 18
+
+   25 constructorDeclarations: consdec .
+
+    $default  reduce using rule 25 (constructorDeclarations)
+
+
+State 19
+
+    7 classBody: LBRACE methodDeclarations . RBRACE
+   29 methodDeclarations: methodDeclarations . methdec
+
+    INT     shift, and go to state 10
+    ID      shift, and go to state 4
+    RBRACE  shift, and go to state 33
+    VOID    shift, and go to state 12
+
+    type        go to state 30
+    simpleType  go to state 16
+    methdec     go to state 34
+    ident       go to state 35
+
+
+State 20
+
+   28 methodDeclarations: methdec .
+
+    $default  reduce using rule 28 (methodDeclarations)
+
+
+State 21
+
+   24 simpleType: ident .
+   27 consdec: ident . LPAREN consParamList RPAREN constructorBlock
+
+    LPAREN  shift, and go to state 36
+
+    $default  reduce using rule 24 (simpleType)
+
+
+State 22
+
+   31 methdec: VOID ident . LPAREN methParamList RPAREN methodBlock
+
+    LPAREN  shift, and go to state 37
+
+
+State 23
+
+    5 classBody: LBRACE classVariableDeclarations RBRACE .
+
+    $default  reduce using rule 5 (classBody)
+
+
+State 24
+
+   13 classVariableDeclarations: classVariableDeclarations vardec .
+
+    $default  reduce using rule 13 (classVariableDeclarations)
+
+
+State 25
+
+    8 classBody: LBRACE classVariableDeclarations constructorDeclarations . RBRACE
+   11          | LBRACE classVariableDeclarations constructorDeclarations . methodDeclarations RBRACE
+   26 constructorDeclarations: constructorDeclarations . consdec
+
+    INT     shift, and go to state 10
+    ID      shift, and go to state 4
+    RBRACE  shift, and go to state 38
+    VOID    shift, and go to state 12
+
+    type                go to state 30
+    simpleType          go to state 16
+    consdec             go to state 31
+    methodDeclarations  go to state 39
+    methdec             go to state 20
+    ident               go to state 21
+
+
+State 26
+
+    9 classBody: LBRACE classVariableDeclarations methodDeclarations . RBRACE
+   29 methodDeclarations: methodDeclarations . methdec
+
+    INT     shift, and go to state 10
+    ID      shift, and go to state 4
+    RBRACE  shift, and go to state 40
+    VOID    shift, and go to state 12
+
+    type        go to state 30
+    simpleType  go to state 16
+    methdec     go to state 34
+    ident       go to state 35
+
+
+State 27
+
+   22 type: type LBRACK . RBRACK
+
+    RBRACK  shift, and go to state 41
+
+
+State 28
+
+   20 vardec: type ident . SEMI
+   30 methdec: type ident . LPAREN methParamList RPAREN methodBlock
+
+    LPAREN  shift, and go to state 42
+    SEMI    shift, and go to state 43
+
+
+State 29
+
+    6 classBody: LBRACE constructorDeclarations RBRACE .
+
+    $default  reduce using rule 6 (classBody)
+
+
+State 30
+
+   22 type: type . LBRACK RBRACK
+   30 methdec: type . ident LPAREN methParamList RPAREN methodBlock
+
+    ID      shift, and go to state 4
+    LBRACK  shift, and go to state 27
+
+    ident  go to state 44
+
+
+State 31
+
+   26 constructorDeclarations: constructorDeclarations consdec .
+
+    $default  reduce using rule 26 (constructorDeclarations)
+
+
+State 32
+
+   10 classBody: LBRACE constructorDeclarations methodDeclarations . RBRACE
+   29 methodDeclarations: methodDeclarations . methdec
+
+    INT     shift, and go to state 10
+    ID      shift, and go to state 4
+    RBRACE  shift, and go to state 45
+    VOID    shift, and go to state 12
+
+    type        go to state 30
+    simpleType  go to state 16
+    methdec     go to state 34
+    ident       go to state 35
+
+
+State 33
+
+    7 classBody: LBRACE methodDeclarations RBRACE .
+
+    $default  reduce using rule 7 (classBody)
+
+
+State 34
+
+   29 methodDeclarations: methodDeclarations methdec .
+
+    $default  reduce using rule 29 (methodDeclarations)
+
+
+State 35
+
+   24 simpleType: ident .
+
+    $default  reduce using rule 24 (simpleType)
+
+
+State 36
+
+   27 consdec: ident LPAREN . consParamList RPAREN constructorBlock
+
+    INT  shift, and go to state 10
+    ID   shift, and go to state 4
+
+    $default  reduce using rule 32 (consParamList)
+
+    type           go to state 46
+    simpleType     go to state 16
+    consParamList  go to state 47
+    parameter      go to state 48
+    ident          go to state 35
+
+
+State 37
+
+   31 methdec: VOID ident LPAREN . methParamList RPAREN methodBlock
+
+    INT  shift, and go to state 10
+    ID   shift, and go to state 4
+
+    $default  reduce using rule 35 (methParamList)
+
+    type           go to state 46
+    simpleType     go to state 16
+    methParamList  go to state 49
+    parameter      go to state 50
+    ident          go to state 35
+
+
+State 38
+
+    8 classBody: LBRACE classVariableDeclarations constructorDeclarations RBRACE .
+
+    $default  reduce using rule 8 (classBody)
+
+
+State 39
+
+   11 classBody: LBRACE classVariableDeclarations constructorDeclarations methodDeclarations . RBRACE
+   29 methodDeclarations: methodDeclarations . methdec
+
+    INT     shift, and go to state 10
+    ID      shift, and go to state 4
+    RBRACE  shift, and go to state 51
+    VOID    shift, and go to state 12
+
+    type        go to state 30
+    simpleType  go to state 16
+    methdec     go to state 34
+    ident       go to state 35
+
+
+State 40
+
+    9 classBody: LBRACE classVariableDeclarations methodDeclarations RBRACE .
+
+    $default  reduce using rule 9 (classBody)
+
+
+State 41
+
+   22 type: type LBRACK RBRACK .
+
+    $default  reduce using rule 22 (type)
+
+
+State 42
+
+   30 methdec: type ident LPAREN . methParamList RPAREN methodBlock
+
+    INT  shift, and go to state 10
+    ID   shift, and go to state 4
+
+    $default  reduce using rule 35 (methParamList)
+
+    type           go to state 46
+    simpleType     go to state 16
+    methParamList  go to state 52
+    parameter      go to state 50
+    ident          go to state 35
+
+
+State 43
+
+   20 vardec: type ident SEMI .
+
+    $default  reduce using rule 20 (vardec)
+
+
+State 44
+
+   30 methdec: type ident . LPAREN methParamList RPAREN methodBlock
+
+    LPAREN  shift, and go to state 42
+
+
+State 45
+
+   10 classBody: LBRACE constructorDeclarations methodDeclarations RBRACE .
+
+    $default  reduce using rule 10 (classBody)
+
+
+State 46
+
+   22 type: type . LBRACK RBRACK
+   38 parameter: type . ident
+
+    ID      shift, and go to state 4
+    LBRACK  shift, and go to state 27
+
+    ident  go to state 53
+
+
+State 47
+
+   27 consdec: ident LPAREN consParamList . RPAREN constructorBlock
+   34 consParamList: consParamList . COMMA parameter
+
+    RPAREN  shift, and go to state 54
+    COMMA   shift, and go to state 55
+
+
+State 48
+
+   33 consParamList: parameter .
+
+    $default  reduce using rule 33 (consParamList)
+
+
+State 49
+
+   31 methdec: VOID ident LPAREN methParamList . RPAREN methodBlock
+   37 methParamList: methParamList . COMMA parameter
+
+    RPAREN  shift, and go to state 56
+    COMMA   shift, and go to state 57
+
+
+State 50
+
+   36 methParamList: parameter .
+
+    $default  reduce using rule 36 (methParamList)
+
+
+State 51
+
+   11 classBody: LBRACE classVariableDeclarations constructorDeclarations methodDeclarations RBRACE .
+
+    $default  reduce using rule 11 (classBody)
+
+
+State 52
+
+   30 methdec: type ident LPAREN methParamList . RPAREN methodBlock
+   37 methParamList: methParamList . COMMA parameter
+
+    RPAREN  shift, and go to state 58
+    COMMA   shift, and go to state 57
+
+
+State 53
+
+   38 parameter: type ident .
+
+    $default  reduce using rule 38 (parameter)
+
+
+State 54
+
+   27 consdec: ident LPAREN consParamList RPAREN . constructorBlock
+
+    LBRACE  shift, and go to state 59
+
+    constructorBlock  go to state 60
+
+
+State 55
+
+   34 consParamList: consParamList COMMA . parameter
+
+    INT  shift, and go to state 10
+    ID   shift, and go to state 4
+
+    type        go to state 46
+    simpleType  go to state 16
+    parameter   go to state 61
+    ident       go to state 35
+
+
+State 56
+
+   31 methdec: VOID ident LPAREN methParamList RPAREN . methodBlock
+
+    LBRACE  shift, and go to state 62
+
+    methodBlock  go to state 63
+
+
+State 57
+
+   37 methParamList: methParamList COMMA . parameter
+
+    INT  shift, and go to state 10
+    ID   shift, and go to state 4
+
+    type        go to state 46
+    simpleType  go to state 16
+    parameter   go to state 64
+    ident       go to state 35
+
+
+State 58
+
+   30 methdec: type ident LPAREN methParamList RPAREN . methodBlock
+
+    LBRACE  shift, and go to state 62
+
+    methodBlock  go to state 65
+
+
+State 59
+
+   39 constructorBlock: LBRACE . RBRACE
+   40                 | LBRACE . constructorVariableDeclarations RBRACE
+   41                 | LBRACE . statements RBRACE
+   42                 | LBRACE . constructorVariableDeclarations statements RBRACE
+
+    INT     shift, and go to state 10
+    ID      shift, and go to state 4
+    THIS    shift, and go to state 66
+    SEMI    shift, and go to state 67
+    LBRACE  shift, and go to state 68
+    RBRACE  shift, and go to state 69
+    IF      shift, and go to state 70
+    WHILE   shift, and go to state 71
+    PRINT   shift, and go to state 72
+    RETURN  shift, and go to state 73
+
+    constructorVariableDeclarations  go to state 74
+    vardec                           go to state 75
+    type                             go to state 76
+    simpleType                       go to state 16
+    subBlock                         go to state 77
+    statements                       go to state 78
+    statement                        go to state 79
+    name                             go to state 80
+    conditionalStatement             go to state 81
+    ident                            go to state 82
+
+
+State 60
+
+   27 consdec: ident LPAREN consParamList RPAREN constructorBlock .
+
+    $default  reduce using rule 27 (consdec)
+
+
+State 61
+
+   34 consParamList: consParamList COMMA parameter .
+
+    $default  reduce using rule 34 (consParamList)
+
+
+State 62
+
+   43 methodBlock: LBRACE . RBRACE
+   44            | LBRACE . methodVariableDeclarations RBRACE
+   45            | LBRACE . statements RBRACE
+   46            | LBRACE . methodVariableDeclarations statements RBRACE
+
+    INT     shift, and go to state 10
+    ID      shift, and go to state 4
+    THIS    shift, and go to state 66
+    SEMI    shift, and go to state 67
+    LBRACE  shift, and go to state 68
+    RBRACE  shift, and go to state 83
+    IF      shift, and go to state 70
+    WHILE   shift, and go to state 71
+    PRINT   shift, and go to state 72
+    RETURN  shift, and go to state 73
+
+    methodVariableDeclarations  go to state 84
+    vardec                      go to state 85
+    type                        go to state 76
+    simpleType                  go to state 16
+    subBlock                    go to state 77
+    statements                  go to state 86
+    statement                   go to state 79
+    name                        go to state 80
+    conditionalStatement        go to state 81
+    ident                       go to state 82
+
+
+State 63
+
+   31 methdec: VOID ident LPAREN methParamList RPAREN methodBlock .
+
+    $default  reduce using rule 31 (methdec)
+
+
+State 64
+
+   37 methParamList: methParamList COMMA parameter .
+
+    $default  reduce using rule 37 (methParamList)
+
+
+State 65
+
+   30 methdec: type ident LPAREN methParamList RPAREN methodBlock .
+
+    $default  reduce using rule 30 (methdec)
+
+
+State 66
+
+   61 name: THIS .
+
+    $default  reduce using rule 61 (name)
+
+
+State 67
+
+   53 statement: SEMI .
+
+    $default  reduce using rule 53 (statement)
+
+
+State 68
+
+   47 subBlock: LBRACE . RBRACE
+   48         | LBRACE . blockVariableDeclarations RBRACE
+   49         | LBRACE . statements RBRACE
+   50         | LBRACE . blockVariableDeclarations statements RBRACE
+
+    INT     shift, and go to state 10
+    ID      shift, and go to state 4
+    THIS    shift, and go to state 66
+    SEMI    shift, and go to state 67
+    LBRACE  shift, and go to state 68
+    RBRACE  shift, and go to state 87
+    IF      shift, and go to state 70
+    WHILE   shift, and go to state 71
+    PRINT   shift, and go to state 72
+    RETURN  shift, and go to state 73
+
+    blockVariableDeclarations  go to state 88
+    vardec                     go to state 89
+    type                       go to state 76
+    simpleType                 go to state 16
+    subBlock                   go to state 77
+    statements                 go to state 90
+    statement                  go to state 79
+    name                       go to state 80
+    conditionalStatement       go to state 81
+    ident                      go to state 82
+
+
+State 69
+
+   39 constructorBlock: LBRACE RBRACE .
+
+    $default  reduce using rule 39 (constructorBlock)
+
+
+State 70
+
+   68 conditionalStatement: IF . LPAREN expression RPAREN statement
+   69                     | IF . LPAREN expression RPAREN statement ELSE statement
+
+    LPAREN  shift, and go to state 91
+
+
+State 71
+
+   56 statement: WHILE . LPAREN expression RPAREN statement
+
+    LPAREN  shift, and go to state 92
+
+
+State 72
+
+   57 statement: PRINT . LPAREN argList RPAREN SEMI
+
+    LPAREN  shift, and go to state 93
+
+
+State 73
+
+   59 statement: RETURN . optionalExpression SEMI
+
+    ID      shift, and go to state 4
+    NUMBER  shift, and go to state 94
+    READ    shift, and go to state 95
+    LPAREN  shift, and go to state 96
+    NEW     shift, and go to state 97
+    THIS    shift, and go to state 66
+    NULLT   shift, and go to state 98
+    PLUS    shift, and go to state 99
+    MINUS   shift, and go to state 100
+    NOT     shift, and go to state 101
+
+    $default  reduce using rule 70 (optionalExpression)
+
+    name                go to state 102
+    optionalExpression  go to state 103
+    expression          go to state 104
+    newExpression       go to state 105
+    ident               go to state 106
+    number              go to state 107
+
+
+State 74
+
+   15 constructorVariableDeclarations: constructorVariableDeclarations . vardec
+   40 constructorBlock: LBRACE constructorVariableDeclarations . RBRACE
+   42                 | LBRACE constructorVariableDeclarations . statements RBRACE
+
+    INT     shift, and go to state 10
+    ID      shift, and go to state 4
+    THIS    shift, and go to state 66
+    SEMI    shift, and go to state 67
+    LBRACE  shift, and go to state 68
+    RBRACE  shift, and go to state 108
+    IF      shift, and go to state 70
+    WHILE   shift, and go to state 71
+    PRINT   shift, and go to state 72
+    RETURN  shift, and go to state 73
+
+    vardec                go to state 109
+    type                  go to state 76
+    simpleType            go to state 16
+    subBlock              go to state 77
+    statements            go to state 110
+    statement             go to state 79
+    name                  go to state 80
+    conditionalStatement  go to state 81
+    ident                 go to state 82
+
+
+State 75
+
+   14 constructorVariableDeclarations: vardec .
+
+    $default  reduce using rule 14 (constructorVariableDeclarations)
+
+
+State 76
+
+   20 vardec: type . ident SEMI
+   22 type: type . LBRACK RBRACK
+
+    ID      shift, and go to state 4
+    LBRACK  shift, and go to state 27
+
+    ident  go to state 111
+
+
+State 77
+
+   60 statement: subBlock .
+
+    $default  reduce using rule 60 (statement)
+
+
+State 78
+
+   41 constructorBlock: LBRACE statements . RBRACE
+   52 statements: statements . statement
+
+    ID      shift, and go to state 4
+    THIS    shift, and go to state 66
+    SEMI    shift, and go to state 67
+    LBRACE  shift, and go to state 68
+    RBRACE  shift, and go to state 112
+    IF      shift, and go to state 70
+    WHILE   shift, and go to state 71
+    PRINT   shift, and go to state 72
+    RETURN  shift, and go to state 73
+
+    subBlock              go to state 77
+    statement             go to state 113
+    name                  go to state 80
+    conditionalStatement  go to state 81
+    ident                 go to state 106
+
+
+State 79
+
+   51 statements: statement .
+
+    $default  reduce using rule 51 (statements)
+
+
+State 80
+
+   54 statement: name . ASSIGN expression SEMI
+   55          | name . LPAREN argList RPAREN SEMI
+   63 name: name . DOT ident
+   64     | name . LBRACK expression RBRACK
+
+    LPAREN  shift, and go to state 114
+    ASSIGN  shift, and go to state 115
+    DOT     shift, and go to state 116
+    LBRACK  shift, and go to state 117
+
+
+State 81
+
+   58 statement: conditionalStatement .
+
+    $default  reduce using rule 58 (statement)
+
+
+State 82
+
+   24 simpleType: ident .
+   62 name: ident .
+
+    ID        reduce using rule 24 (simpleType)
+    LBRACK    reduce using rule 24 (simpleType)
+    LBRACK    [reduce using rule 62 (name)]
+    $default  reduce using rule 62 (name)
+
+
+State 83
+
+   43 methodBlock: LBRACE RBRACE .
+
+    $default  reduce using rule 43 (methodBlock)
+
+
+State 84
+
+   17 methodVariableDeclarations: methodVariableDeclarations . vardec
+   44 methodBlock: LBRACE methodVariableDeclarations . RBRACE
+   46            | LBRACE methodVariableDeclarations . statements RBRACE
+
+    INT     shift, and go to state 10
+    ID      shift, and go to state 4
+    THIS    shift, and go to state 66
+    SEMI    shift, and go to state 67
+    LBRACE  shift, and go to state 68
+    RBRACE  shift, and go to state 118
+    IF      shift, and go to state 70
+    WHILE   shift, and go to state 71
+    PRINT   shift, and go to state 72
+    RETURN  shift, and go to state 73
+
+    vardec                go to state 119
+    type                  go to state 76
+    simpleType            go to state 16
+    subBlock              go to state 77
+    statements            go to state 120
+    statement             go to state 79
+    name                  go to state 80
+    conditionalStatement  go to state 81
+    ident                 go to state 82
+
+
+State 85
+
+   16 methodVariableDeclarations: vardec .
+
+    $default  reduce using rule 16 (methodVariableDeclarations)
+
+
+State 86
+
+   45 methodBlock: LBRACE statements . RBRACE
+   52 statements: statements . statement
+
+    ID      shift, and go to state 4
+    THIS    shift, and go to state 66
+    SEMI    shift, and go to state 67
+    LBRACE  shift, and go to state 68
+    RBRACE  shift, and go to state 121
+    IF      shift, and go to state 70
+    WHILE   shift, and go to state 71
+    PRINT   shift, and go to state 72
+    RETURN  shift, and go to state 73
+
+    subBlock              go to state 77
+    statement             go to state 113
+    name                  go to state 80
+    conditionalStatement  go to state 81
+    ident                 go to state 106
+
+
+State 87
+
+   47 subBlock: LBRACE RBRACE .
+
+    $default  reduce using rule 47 (subBlock)
+
+
+State 88
+
+   19 blockVariableDeclarations: blockVariableDeclarations . vardec
+   48 subBlock: LBRACE blockVariableDeclarations . RBRACE
+   50         | LBRACE blockVariableDeclarations . statements RBRACE
+
+    INT     shift, and go to state 10
+    ID      shift, and go to state 4
+    THIS    shift, and go to state 66
+    SEMI    shift, and go to state 67
+    LBRACE  shift, and go to state 68
+    RBRACE  shift, and go to state 122
+    IF      shift, and go to state 70
+    WHILE   shift, and go to state 71
+    PRINT   shift, and go to state 72
+    RETURN  shift, and go to state 73
+
+    vardec                go to state 123
+    type                  go to state 76
+    simpleType            go to state 16
+    subBlock              go to state 77
+    statements            go to state 124
+    statement             go to state 79
+    name                  go to state 80
+    conditionalStatement  go to state 81
+    ident                 go to state 82
+
+
+State 89
+
+   18 blockVariableDeclarations: vardec .
+
+    $default  reduce using rule 18 (blockVariableDeclarations)
+
+
+State 90
+
+   49 subBlock: LBRACE statements . RBRACE
+   52 statements: statements . statement
+
+    ID      shift, and go to state 4
+    THIS    shift, and go to state 66
+    SEMI    shift, and go to state 67
+    LBRACE  shift, and go to state 68
+    RBRACE  shift, and go to state 125
+    IF      shift, and go to state 70
+    WHILE   shift, and go to state 71
+    PRINT   shift, and go to state 72
+    RETURN  shift, and go to state 73
+
+    subBlock              go to state 77
+    statement             go to state 113
+    name                  go to state 80
+    conditionalStatement  go to state 81
+    ident                 go to state 106
+
+
+State 91
+
+   68 conditionalStatement: IF LPAREN . expression RPAREN statement
+   69                     | IF LPAREN . expression RPAREN statement ELSE statement
+
+    ID      shift, and go to state 4
+    NUMBER  shift, and go to state 94
+    READ    shift, and go to state 95
+    LPAREN  shift, and go to state 96
+    NEW     shift, and go to state 97
+    THIS    shift, and go to state 66
+    NULLT   shift, and go to state 98
+    PLUS    shift, and go to state 99
+    MINUS   shift, and go to state 100
+    NOT     shift, and go to state 101
+
+    name           go to state 102
+    expression     go to state 126
+    newExpression  go to state 105
+    ident          go to state 106
+    number         go to state 107
+
+
+State 92
+
+   56 statement: WHILE LPAREN . expression RPAREN statement
+
+    ID      shift, and go to state 4
+    NUMBER  shift, and go to state 94
+    READ    shift, and go to state 95
+    LPAREN  shift, and go to state 96
+    NEW     shift, and go to state 97
+    THIS    shift, and go to state 66
+    NULLT   shift, and go to state 98
+    PLUS    shift, and go to state 99
+    MINUS   shift, and go to state 100
+    NOT     shift, and go to state 101
+
+    name           go to state 102
+    expression     go to state 127
+    newExpression  go to state 105
+    ident          go to state 106
+    number         go to state 107
+
+
+State 93
+
+   57 statement: PRINT LPAREN . argList RPAREN SEMI
+
+    ID      shift, and go to state 4
+    NUMBER  shift, and go to state 94
+    READ    shift, and go to state 95
+    LPAREN  shift, and go to state 96
+    NEW     shift, and go to state 97
+    THIS    shift, and go to state 66
+    NULLT   shift, and go to state 98
+    PLUS    shift, and go to state 99
+    MINUS   shift, and go to state 100
+    NOT     shift, and go to state 101
+
+    $default  reduce using rule 65 (argList)
+
+    name           go to state 102
+    argList        go to state 128
+    expression     go to state 129
+    newExpression  go to state 105
+    ident          go to state 106
+    number         go to state 107
+
+
+State 94
+
+  103 number: NUMBER .
+
+    $default  reduce using rule 103 (number)
+
+
+State 95
+
+   76 expression: READ . LPAREN RPAREN
+
+    LPAREN  shift, and go to state 130
+
+
+State 96
+
+   93 expression: LPAREN . expression RPAREN
+
+    ID      shift, and go to state 4
+    NUMBER  shift, and go to state 94
+    READ    shift, and go to state 95
+    LPAREN  shift, and go to state 96
+    NEW     shift, and go to state 97
+    THIS    shift, and go to state 66
+    NULLT   shift, and go to state 98
+    PLUS    shift, and go to state 99
+    MINUS   shift, and go to state 100
+    NOT     shift, and go to state 101
+
+    name           go to state 102
+    expression     go to state 131
+    newExpression  go to state 105
+    ident          go to state 106
+    number         go to state 107
+
+
+State 97
+
+   95 newExpression: NEW . ident LPAREN argList RPAREN
+   96              | NEW . simpleType brackExpressions bracks
+   97              | NEW . simpleType brackExpressions
+
+    INT  shift, and go to state 10
+    ID   shift, and go to state 4
+
+    simpleType  go to state 132
+    ident       go to state 133
+
+
+State 98
+
+   74 expression: NULLT .
+
+    $default  reduce using rule 74 (expression)
+
+
+State 99
+
+   78 expression: PLUS . expression
+
+    ID      shift, and go to state 4
+    NUMBER  shift, and go to state 94
+    READ    shift, and go to state 95
+    LPAREN  shift, and go to state 96
+    NEW     shift, and go to state 97
+    THIS    shift, and go to state 66
+    NULLT   shift, and go to state 98
+    PLUS    shift, and go to state 99
+    MINUS   shift, and go to state 100
+    NOT     shift, and go to state 101
+
+    name           go to state 102
+    expression     go to state 134
+    newExpression  go to state 105
+    ident          go to state 106
+    number         go to state 107
+
+
+State 100
+
+   79 expression: MINUS . expression
+
+    ID      shift, and go to state 4
+    NUMBER  shift, and go to state 94
+    READ    shift, and go to state 95
+    LPAREN  shift, and go to state 96
+    NEW     shift, and go to state 97
+    THIS    shift, and go to state 66
+    NULLT   shift, and go to state 98
+    PLUS    shift, and go to state 99
+    MINUS   shift, and go to state 100
+    NOT     shift, and go to state 101
+
+    name           go to state 102
+    expression     go to state 135
+    newExpression  go to state 105
+    ident          go to state 106
+    number         go to state 107
+
+
+State 101
+
+   80 expression: NOT . expression
+
+    ID      shift, and go to state 4
+    NUMBER  shift, and go to state 94
+    READ    shift, and go to state 95
+    LPAREN  shift, and go to state 96
+    NEW     shift, and go to state 97
+    THIS    shift, and go to state 66
+    NULLT   shift, and go to state 98
+    PLUS    shift, and go to state 99
+    MINUS   shift, and go to state 100
+    NOT     shift, and go to state 101
+
+    name           go to state 102
+    expression     go to state 136
+    newExpression  go to state 105
+    ident          go to state 106
+    number         go to state 107
+
+
+State 102
+
+   63 name: name . DOT ident
+   64     | name . LBRACK expression RBRACK
+   72 expression: name .
+   75           | name . LPAREN argList RPAREN
+
+    LPAREN  shift, and go to state 137
+    DOT     shift, and go to state 116
+    LBRACK  shift, and go to state 117
+
+    $default  reduce using rule 72 (expression)
+
+
+State 103
+
+   59 statement: RETURN optionalExpression . SEMI
+
+    SEMI  shift, and go to state 138
+
+
+State 104
+
+   71 optionalExpression: expression .
+   81 expression: expression . EQ expression
+   82           | expression . NE expression
+   83           | expression . LE expression
+   84           | expression . GE expression
+   85           | expression . LT expression
+   86           | expression . GT expression
+   87           | expression . PLUS expression
+   88           | expression . MINUS expression
+   89           | expression . OR expression
+   90           | expression . TIMES expression
+   91           | expression . DIV expression
+   92           | expression . MOD expression
+   94           | expression . AND expression
+
+    EQ     shift, and go to state 139
+    NE     shift, and go to state 140
+    GE     shift, and go to state 141
+    LE     shift, and go to state 142
+    GT     shift, and go to state 143
+    LT     shift, and go to state 144
+    TIMES  shift, and go to state 145
+    DIV    shift, and go to state 146
+    MOD    shift, and go to state 147
+    AND    shift, and go to state 148
+    OR     shift, and go to state 149
+    PLUS   shift, and go to state 150
+    MINUS  shift, and go to state 151
+
+    $default  reduce using rule 71 (optionalExpression)
+
+
+State 105
+
+   77 expression: newExpression .
+
+    $default  reduce using rule 77 (expression)
+
+
+State 106
+
+   62 name: ident .
+
+    $default  reduce using rule 62 (name)
+
+
+State 107
+
+   73 expression: number .
+
+    $default  reduce using rule 73 (expression)
+
+
+State 108
+
+   40 constructorBlock: LBRACE constructorVariableDeclarations RBRACE .
+
+    $default  reduce using rule 40 (constructorBlock)
+
+
+State 109
+
+   15 constructorVariableDeclarations: constructorVariableDeclarations vardec .
+
+    $default  reduce using rule 15 (constructorVariableDeclarations)
+
+
+State 110
+
+   42 constructorBlock: LBRACE constructorVariableDeclarations statements . RBRACE
+   52 statements: statements . statement
+
+    ID      shift, and go to state 4
+    THIS    shift, and go to state 66
+    SEMI    shift, and go to state 67
+    LBRACE  shift, and go to state 68
+    RBRACE  shift, and go to state 152
+    IF      shift, and go to state 70
+    WHILE   shift, and go to state 71
+    PRINT   shift, and go to state 72
+    RETURN  shift, and go to state 73
+
+    subBlock              go to state 77
+    statement             go to state 113
+    name                  go to state 80
+    conditionalStatement  go to state 81
+    ident                 go to state 106
+
+
+State 111
+
+   20 vardec: type ident . SEMI
+
+    SEMI  shift, and go to state 43
+
+
+State 112
+
+   41 constructorBlock: LBRACE statements RBRACE .
+
+    $default  reduce using rule 41 (constructorBlock)
+
+
+State 113
+
+   52 statements: statements statement .
+
+    $default  reduce using rule 52 (statements)
+
+
+State 114
+
+   55 statement: name LPAREN . argList RPAREN SEMI
+
+    ID      shift, and go to state 4
+    NUMBER  shift, and go to state 94
+    READ    shift, and go to state 95
+    LPAREN  shift, and go to state 96
+    NEW     shift, and go to state 97
+    THIS    shift, and go to state 66
+    NULLT   shift, and go to state 98
+    PLUS    shift, and go to state 99
+    MINUS   shift, and go to state 100
+    NOT     shift, and go to state 101
+
+    $default  reduce using rule 65 (argList)
+
+    name           go to state 102
+    argList        go to state 153
+    expression     go to state 129
+    newExpression  go to state 105
+    ident          go to state 106
+    number         go to state 107
+
+
+State 115
+
+   54 statement: name ASSIGN . expression SEMI
+
+    ID      shift, and go to state 4
+    NUMBER  shift, and go to state 94
+    READ    shift, and go to state 95
+    LPAREN  shift, and go to state 96
+    NEW     shift, and go to state 97
+    THIS    shift, and go to state 66
+    NULLT   shift, and go to state 98
+    PLUS    shift, and go to state 99
+    MINUS   shift, and go to state 100
+    NOT     shift, and go to state 101
+
+    name           go to state 102
+    expression     go to state 154
+    newExpression  go to state 105
+    ident          go to state 106
+    number         go to state 107
+
+
+State 116
+
+   63 name: name DOT . ident
+
+    ID  shift, and go to state 4
+
+    ident  go to state 155
+
+
+State 117
+
+   64 name: name LBRACK . expression RBRACK
+
+    ID      shift, and go to state 4
+    NUMBER  shift, and go to state 94
+    READ    shift, and go to state 95
+    LPAREN  shift, and go to state 96
+    NEW     shift, and go to state 97
+    THIS    shift, and go to state 66
+    NULLT   shift, and go to state 98
+    PLUS    shift, and go to state 99
+    MINUS   shift, and go to state 100
+    NOT     shift, and go to state 101
+
+    name           go to state 102
+    expression     go to state 156
+    newExpression  go to state 105
+    ident          go to state 106
+    number         go to state 107
+
+
+State 118
+
+   44 methodBlock: LBRACE methodVariableDeclarations RBRACE .
+
+    $default  reduce using rule 44 (methodBlock)
+
+
+State 119
+
+   17 methodVariableDeclarations: methodVariableDeclarations vardec .
+
+    $default  reduce using rule 17 (methodVariableDeclarations)
+
+
+State 120
+
+   46 methodBlock: LBRACE methodVariableDeclarations statements . RBRACE
+   52 statements: statements . statement
+
+    ID      shift, and go to state 4
+    THIS    shift, and go to state 66
+    SEMI    shift, and go to state 67
+    LBRACE  shift, and go to state 68
+    RBRACE  shift, and go to state 157
+    IF      shift, and go to state 70
+    WHILE   shift, and go to state 71
+    PRINT   shift, and go to state 72
+    RETURN  shift, and go to state 73
+
+    subBlock              go to state 77
+    statement             go to state 113
+    name                  go to state 80
+    conditionalStatement  go to state 81
+    ident                 go to state 106
+
+
+State 121
+
+   45 methodBlock: LBRACE statements RBRACE .
+
+    $default  reduce using rule 45 (methodBlock)
+
+
+State 122
+
+   48 subBlock: LBRACE blockVariableDeclarations RBRACE .
+
+    $default  reduce using rule 48 (subBlock)
+
+
+State 123
+
+   19 blockVariableDeclarations: blockVariableDeclarations vardec .
+
+    $default  reduce using rule 19 (blockVariableDeclarations)
+
+
+State 124
+
+   50 subBlock: LBRACE blockVariableDeclarations statements . RBRACE
+   52 statements: statements . statement
+
+    ID      shift, and go to state 4
+    THIS    shift, and go to state 66
+    SEMI    shift, and go to state 67
+    LBRACE  shift, and go to state 68
+    RBRACE  shift, and go to state 158
+    IF      shift, and go to state 70
+    WHILE   shift, and go to state 71
+    PRINT   shift, and go to state 72
+    RETURN  shift, and go to state 73
+
+    subBlock              go to state 77
+    statement             go to state 113
+    name                  go to state 80
+    conditionalStatement  go to state 81
+    ident                 go to state 106
+
+
+State 125
+
+   49 subBlock: LBRACE statements RBRACE .
+
+    $default  reduce using rule 49 (subBlock)
+
+
+State 126
+
+   68 conditionalStatement: IF LPAREN expression . RPAREN statement
+   69                     | IF LPAREN expression . RPAREN statement ELSE statement
+   81 expression: expression . EQ expression
+   82           | expression . NE expression
+   83           | expression . LE expression
+   84           | expression . GE expression
+   85           | expression . LT expression
+   86           | expression . GT expression
+   87           | expression . PLUS expression
+   88           | expression . MINUS expression
+   89           | expression . OR expression
+   90           | expression . TIMES expression
+   91           | expression . DIV expression
+   92           | expression . MOD expression
+   94           | expression . AND expression
+
+    RPAREN  shift, and go to state 159
+    EQ      shift, and go to state 139
+    NE      shift, and go to state 140
+    GE      shift, and go to state 141
+    LE      shift, and go to state 142
+    GT      shift, and go to state 143
+    LT      shift, and go to state 144
+    TIMES   shift, and go to state 145
+    DIV     shift, and go to state 146
+    MOD     shift, and go to state 147
+    AND     shift, and go to state 148
+    OR      shift, and go to state 149
+    PLUS    shift, and go to state 150
+    MINUS   shift, and go to state 151
+
+
+State 127
+
+   56 statement: WHILE LPAREN expression . RPAREN statement
+   81 expression: expression . EQ expression
+   82           | expression . NE expression
+   83           | expression . LE expression
+   84           | expression . GE expression
+   85           | expression . LT expression
+   86           | expression . GT expression
+   87           | expression . PLUS expression
+   88           | expression . MINUS expression
+   89           | expression . OR expression
+   90           | expression . TIMES expression
+   91           | expression . DIV expression
+   92           | expression . MOD expression
+   94           | expression . AND expression
+
+    RPAREN  shift, and go to state 160
+    EQ      shift, and go to state 139
+    NE      shift, and go to state 140
+    GE      shift, and go to state 141
+    LE      shift, and go to state 142
+    GT      shift, and go to state 143
+    LT      shift, and go to state 144
+    TIMES   shift, and go to state 145
+    DIV     shift, and go to state 146
+    MOD     shift, and go to state 147
+    AND     shift, and go to state 148
+    OR      shift, and go to state 149
+    PLUS    shift, and go to state 150
+    MINUS   shift, and go to state 151
+
+
+State 128
+
+   57 statement: PRINT LPAREN argList . RPAREN SEMI
+   67 argList: argList . COMMA expression
+
+    RPAREN  shift, and go to state 161
+    COMMA   shift, and go to state 162
+
+
+State 129
+
+   66 argList: expression .
+   81 expression: expression . EQ expression
+   82           | expression . NE expression
+   83           | expression . LE expression
+   84           | expression . GE expression
+   85           | expression . LT expression
+   86           | expression . GT expression
+   87           | expression . PLUS expression
+   88           | expression . MINUS expression
+   89           | expression . OR expression
+   90           | expression . TIMES expression
+   91           | expression . DIV expression
+   92           | expression . MOD expression
+   94           | expression . AND expression
+
+    EQ     shift, and go to state 139
+    NE     shift, and go to state 140
+    GE     shift, and go to state 141
+    LE     shift, and go to state 142
+    GT     shift, and go to state 143
+    LT     shift, and go to state 144
+    TIMES  shift, and go to state 145
+    DIV    shift, and go to state 146
+    MOD    shift, and go to state 147
+    AND    shift, and go to state 148
+    OR     shift, and go to state 149
+    PLUS   shift, and go to state 150
+    MINUS  shift, and go to state 151
+
+    $default  reduce using rule 66 (argList)
+
+
+State 130
+
+   76 expression: READ LPAREN . RPAREN
+
+    RPAREN  shift, and go to state 163
+
+
+State 131
+
+   81 expression: expression . EQ expression
+   82           | expression . NE expression
+   83           | expression . LE expression
+   84           | expression . GE expression
+   85           | expression . LT expression
+   86           | expression . GT expression
+   87           | expression . PLUS expression
+   88           | expression . MINUS expression
+   89           | expression . OR expression
+   90           | expression . TIMES expression
+   91           | expression . DIV expression
+   92           | expression . MOD expression
+   93           | LPAREN expression . RPAREN
+   94           | expression . AND expression
+
+    RPAREN  shift, and go to state 164
+    EQ      shift, and go to state 139
+    NE      shift, and go to state 140
+    GE      shift, and go to state 141
+    LE      shift, and go to state 142
+    GT      shift, and go to state 143
+    LT      shift, and go to state 144
+    TIMES   shift, and go to state 145
+    DIV     shift, and go to state 146
+    MOD     shift, and go to state 147
+    AND     shift, and go to state 148
+    OR      shift, and go to state 149
+    PLUS    shift, and go to state 150
+    MINUS   shift, and go to state 151
+
+
+State 132
+
+   96 newExpression: NEW simpleType . brackExpressions bracks
+   97              | NEW simpleType . brackExpressions
+
+    LBRACK  shift, and go to state 165
+
+    brackExpressions  go to state 166
+
+
+State 133
+
+   24 simpleType: ident .
+   95 newExpression: NEW ident . LPAREN argList RPAREN
+
+    LPAREN  shift, and go to state 167
+
+    $default  reduce using rule 24 (simpleType)
+
+
+State 134
+
+   78 expression: PLUS expression .
+   81           | expression . EQ expression
+   82           | expression . NE expression
+   83           | expression . LE expression
+   84           | expression . GE expression
+   85           | expression . LT expression
+   86           | expression . GT expression
+   87           | expression . PLUS expression
+   88           | expression . MINUS expression
+   89           | expression . OR expression
+   90           | expression . TIMES expression
+   91           | expression . DIV expression
+   92           | expression . MOD expression
+   94           | expression . AND expression
+
+    $default  reduce using rule 78 (expression)
+
+
+State 135
+
+   79 expression: MINUS expression .
+   81           | expression . EQ expression
+   82           | expression . NE expression
+   83           | expression . LE expression
+   84           | expression . GE expression
+   85           | expression . LT expression
+   86           | expression . GT expression
+   87           | expression . PLUS expression
+   88           | expression . MINUS expression
+   89           | expression . OR expression
+   90           | expression . TIMES expression
+   91           | expression . DIV expression
+   92           | expression . MOD expression
+   94           | expression . AND expression
+
+    $default  reduce using rule 79 (expression)
+
+
+State 136
+
+   80 expression: NOT expression .
+   81           | expression . EQ expression
+   82           | expression . NE expression
+   83           | expression . LE expression
+   84           | expression . GE expression
+   85           | expression . LT expression
+   86           | expression . GT expression
+   87           | expression . PLUS expression
+   88           | expression . MINUS expression
+   89           | expression . OR expression
+   90           | expression . TIMES expression
+   91           | expression . DIV expression
+   92           | expression . MOD expression
+   94           | expression . AND expression
+
+    $default  reduce using rule 80 (expression)
+
+
+State 137
+
+   75 expression: name LPAREN . argList RPAREN
+
+    ID      shift, and go to state 4
+    NUMBER  shift, and go to state 94
+    READ    shift, and go to state 95
+    LPAREN  shift, and go to state 96
+    NEW     shift, and go to state 97
+    THIS    shift, and go to state 66
+    NULLT   shift, and go to state 98
+    PLUS    shift, and go to state 99
+    MINUS   shift, and go to state 100
+    NOT     shift, and go to state 101
+
+    $default  reduce using rule 65 (argList)
+
+    name           go to state 102
+    argList        go to state 168
+    expression     go to state 129
+    newExpression  go to state 105
+    ident          go to state 106
+    number         go to state 107
+
+
+State 138
+
+   59 statement: RETURN optionalExpression SEMI .
+
+    $default  reduce using rule 59 (statement)
+
+
+State 139
+
+   81 expression: expression EQ . expression
+
+    ID      shift, and go to state 4
+    NUMBER  shift, and go to state 94
+    READ    shift, and go to state 95
+    LPAREN  shift, and go to state 96
+    NEW     shift, and go to state 97
+    THIS    shift, and go to state 66
+    NULLT   shift, and go to state 98
+    PLUS    shift, and go to state 99
+    MINUS   shift, and go to state 100
+    NOT     shift, and go to state 101
+
+    name           go to state 102
+    expression     go to state 169
+    newExpression  go to state 105
+    ident          go to state 106
+    number         go to state 107
+
+
+State 140
+
+   82 expression: expression NE . expression
+
+    ID      shift, and go to state 4
+    NUMBER  shift, and go to state 94
+    READ    shift, and go to state 95
+    LPAREN  shift, and go to state 96
+    NEW     shift, and go to state 97
+    THIS    shift, and go to state 66
+    NULLT   shift, and go to state 98
+    PLUS    shift, and go to state 99
+    MINUS   shift, and go to state 100
+    NOT     shift, and go to state 101
+
+    name           go to state 102
+    expression     go to state 170
+    newExpression  go to state 105
+    ident          go to state 106
+    number         go to state 107
+
+
+State 141
+
+   84 expression: expression GE . expression
+
+    ID      shift, and go to state 4
+    NUMBER  shift, and go to state 94
+    READ    shift, and go to state 95
+    LPAREN  shift, and go to state 96
+    NEW     shift, and go to state 97
+    THIS    shift, and go to state 66
+    NULLT   shift, and go to state 98
+    PLUS    shift, and go to state 99
+    MINUS   shift, and go to state 100
+    NOT     shift, and go to state 101
+
+    name           go to state 102
+    expression     go to state 171
+    newExpression  go to state 105
+    ident          go to state 106
+    number         go to state 107
+
+
+State 142
+
+   83 expression: expression LE . expression
+
+    ID      shift, and go to state 4
+    NUMBER  shift, and go to state 94
+    READ    shift, and go to state 95
+    LPAREN  shift, and go to state 96
+    NEW     shift, and go to state 97
+    THIS    shift, and go to state 66
+    NULLT   shift, and go to state 98
+    PLUS    shift, and go to state 99
+    MINUS   shift, and go to state 100
+    NOT     shift, and go to state 101
+
+    name           go to state 102
+    expression     go to state 172
+    newExpression  go to state 105
+    ident          go to state 106
+    number         go to state 107
+
+
+State 143
+
+   86 expression: expression GT . expression
+
+    ID      shift, and go to state 4
+    NUMBER  shift, and go to state 94
+    READ    shift, and go to state 95
+    LPAREN  shift, and go to state 96
+    NEW     shift, and go to state 97
+    THIS    shift, and go to state 66
+    NULLT   shift, and go to state 98
+    PLUS    shift, and go to state 99
+    MINUS   shift, and go to state 100
+    NOT     shift, and go to state 101
+
+    name           go to state 102
+    expression     go to state 173
+    newExpression  go to state 105
+    ident          go to state 106
+    number         go to state 107
+
+
+State 144
+
+   85 expression: expression LT . expression
+
+    ID      shift, and go to state 4
+    NUMBER  shift, and go to state 94
+    READ    shift, and go to state 95
+    LPAREN  shift, and go to state 96
+    NEW     shift, and go to state 97
+    THIS    shift, and go to state 66
+    NULLT   shift, and go to state 98
+    PLUS    shift, and go to state 99
+    MINUS   shift, and go to state 100
+    NOT     shift, and go to state 101
+
+    name           go to state 102
+    expression     go to state 174
+    newExpression  go to state 105
+    ident          go to state 106
+    number         go to state 107
+
+
+State 145
+
+   90 expression: expression TIMES . expression
+
+    ID      shift, and go to state 4
+    NUMBER  shift, and go to state 94
+    READ    shift, and go to state 95
+    LPAREN  shift, and go to state 96
+    NEW     shift, and go to state 97
+    THIS    shift, and go to state 66
+    NULLT   shift, and go to state 98
+    PLUS    shift, and go to state 99
+    MINUS   shift, and go to state 100
+    NOT     shift, and go to state 101
+
+    name           go to state 102
+    expression     go to state 175
+    newExpression  go to state 105
+    ident          go to state 106
+    number         go to state 107
+
+
+State 146
+
+   91 expression: expression DIV . expression
+
+    ID      shift, and go to state 4
+    NUMBER  shift, and go to state 94
+    READ    shift, and go to state 95
+    LPAREN  shift, and go to state 96
+    NEW     shift, and go to state 97
+    THIS    shift, and go to state 66
+    NULLT   shift, and go to state 98
+    PLUS    shift, and go to state 99
+    MINUS   shift, and go to state 100
+    NOT     shift, and go to state 101
+
+    name           go to state 102
+    expression     go to state 176
+    newExpression  go to state 105
+    ident          go to state 106
+    number         go to state 107
+
+
+State 147
+
+   92 expression: expression MOD . expression
+
+    ID      shift, and go to state 4
+    NUMBER  shift, and go to state 94
+    READ    shift, and go to state 95
+    LPAREN  shift, and go to state 96
+    NEW     shift, and go to state 97
+    THIS    shift, and go to state 66
+    NULLT   shift, and go to state 98
+    PLUS    shift, and go to state 99
+    MINUS   shift, and go to state 100
+    NOT     shift, and go to state 101
+
+    name           go to state 102
+    expression     go to state 177
+    newExpression  go to state 105
+    ident          go to state 106
+    number         go to state 107
+
+
+State 148
+
+   94 expression: expression AND . expression
+
+    ID      shift, and go to state 4
+    NUMBER  shift, and go to state 94
+    READ    shift, and go to state 95
+    LPAREN  shift, and go to state 96
+    NEW     shift, and go to state 97
+    THIS    shift, and go to state 66
+    NULLT   shift, and go to state 98
+    PLUS    shift, and go to state 99
+    MINUS   shift, and go to state 100
+    NOT     shift, and go to state 101
+
+    name           go to state 102
+    expression     go to state 178
+    newExpression  go to state 105
+    ident          go to state 106
+    number         go to state 107
+
+
+State 149
+
+   89 expression: expression OR . expression
+
+    ID      shift, and go to state 4
+    NUMBER  shift, and go to state 94
+    READ    shift, and go to state 95
+    LPAREN  shift, and go to state 96
+    NEW     shift, and go to state 97
+    THIS    shift, and go to state 66
+    NULLT   shift, and go to state 98
+    PLUS    shift, and go to state 99
+    MINUS   shift, and go to state 100
+    NOT     shift, and go to state 101
+
+    name           go to state 102
+    expression     go to state 179
+    newExpression  go to state 105
+    ident          go to state 106
+    number         go to state 107
+
+
+State 150
+
+   87 expression: expression PLUS . expression
+
+    ID      shift, and go to state 4
+    NUMBER  shift, and go to state 94
+    READ    shift, and go to state 95
+    LPAREN  shift, and go to state 96
+    NEW     shift, and go to state 97
+    THIS    shift, and go to state 66
+    NULLT   shift, and go to state 98
+    PLUS    shift, and go to state 99
+    MINUS   shift, and go to state 100
+    NOT     shift, and go to state 101
+
+    name           go to state 102
+    expression     go to state 180
+    newExpression  go to state 105
+    ident          go to state 106
+    number         go to state 107
+
+
+State 151
+
+   88 expression: expression MINUS . expression
+
+    ID      shift, and go to state 4
+    NUMBER  shift, and go to state 94
+    READ    shift, and go to state 95
+    LPAREN  shift, and go to state 96
+    NEW     shift, and go to state 97
+    THIS    shift, and go to state 66
+    NULLT   shift, and go to state 98
+    PLUS    shift, and go to state 99
+    MINUS   shift, and go to state 100
+    NOT     shift, and go to state 101
+
+    name           go to state 102
+    expression     go to state 181
+    newExpression  go to state 105
+    ident          go to state 106
+    number         go to state 107
+
+
+State 152
+
+   42 constructorBlock: LBRACE constructorVariableDeclarations statements RBRACE .
+
+    $default  reduce using rule 42 (constructorBlock)
+
+
+State 153
+
+   55 statement: name LPAREN argList . RPAREN SEMI
+   67 argList: argList . COMMA expression
+
+    RPAREN  shift, and go to state 182
+    COMMA   shift, and go to state 162
+
+
+State 154
+
+   54 statement: name ASSIGN expression . SEMI
+   81 expression: expression . EQ expression
+   82           | expression . NE expression
+   83           | expression . LE expression
+   84           | expression . GE expression
+   85           | expression . LT expression
+   86           | expression . GT expression
+   87           | expression . PLUS expression
+   88           | expression . MINUS expression
+   89           | expression . OR expression
+   90           | expression . TIMES expression
+   91           | expression . DIV expression
+   92           | expression . MOD expression
+   94           | expression . AND expression
+
+    SEMI   shift, and go to state 183
+    EQ     shift, and go to state 139
+    NE     shift, and go to state 140
+    GE     shift, and go to state 141
+    LE     shift, and go to state 142
+    GT     shift, and go to state 143
+    LT     shift, and go to state 144
+    TIMES  shift, and go to state 145
+    DIV    shift, and go to state 146
+    MOD    shift, and go to state 147
+    AND    shift, and go to state 148
+    OR     shift, and go to state 149
+    PLUS   shift, and go to state 150
+    MINUS  shift, and go to state 151
+
+
+State 155
+
+   63 name: name DOT ident .
+
+    $default  reduce using rule 63 (name)
+
+
+State 156
+
+   64 name: name LBRACK expression . RBRACK
+   81 expression: expression . EQ expression
+   82           | expression . NE expression
+   83           | expression . LE expression
+   84           | expression . GE expression
+   85           | expression . LT expression
+   86           | expression . GT expression
+   87           | expression . PLUS expression
+   88           | expression . MINUS expression
+   89           | expression . OR expression
+   90           | expression . TIMES expression
+   91           | expression . DIV expression
+   92           | expression . MOD expression
+   94           | expression . AND expression
+
+    RBRACK  shift, and go to state 184
+    EQ      shift, and go to state 139
+    NE      shift, and go to state 140
+    GE      shift, and go to state 141
+    LE      shift, and go to state 142
+    GT      shift, and go to state 143
+    LT      shift, and go to state 144
+    TIMES   shift, and go to state 145
+    DIV     shift, and go to state 146
+    MOD     shift, and go to state 147
+    AND     shift, and go to state 148
+    OR      shift, and go to state 149
+    PLUS    shift, and go to state 150
+    MINUS   shift, and go to state 151
+
+
+State 157
+
+   46 methodBlock: LBRACE methodVariableDeclarations statements RBRACE .
+
+    $default  reduce using rule 46 (methodBlock)
+
+
+State 158
+
+   50 subBlock: LBRACE blockVariableDeclarations statements RBRACE .
+
+    $default  reduce using rule 50 (subBlock)
+
+
+State 159
+
+   68 conditionalStatement: IF LPAREN expression RPAREN . statement
+   69                     | IF LPAREN expression RPAREN . statement ELSE statement
+
+    ID      shift, and go to state 4
+    THIS    shift, and go to state 66
+    SEMI    shift, and go to state 67
+    LBRACE  shift, and go to state 68
+    IF      shift, and go to state 70
+    WHILE   shift, and go to state 71
+    PRINT   shift, and go to state 72
+    RETURN  shift, and go to state 73
+
+    subBlock              go to state 77
+    statement             go to state 185
+    name                  go to state 80
+    conditionalStatement  go to state 81
+    ident                 go to state 106
+
+
+State 160
+
+   56 statement: WHILE LPAREN expression RPAREN . statement
+
+    ID      shift, and go to state 4
+    THIS    shift, and go to state 66
+    SEMI    shift, and go to state 67
+    LBRACE  shift, and go to state 68
+    IF      shift, and go to state 70
+    WHILE   shift, and go to state 71
+    PRINT   shift, and go to state 72
+    RETURN  shift, and go to state 73
+
+    subBlock              go to state 77
+    statement             go to state 186
+    name                  go to state 80
+    conditionalStatement  go to state 81
+    ident                 go to state 106
+
+
+State 161
+
+   57 statement: PRINT LPAREN argList RPAREN . SEMI
+
+    SEMI  shift, and go to state 187
+
+
+State 162
+
+   67 argList: argList COMMA . expression
+
+    ID      shift, and go to state 4
+    NUMBER  shift, and go to state 94
+    READ    shift, and go to state 95
+    LPAREN  shift, and go to state 96
+    NEW     shift, and go to state 97
+    THIS    shift, and go to state 66
+    NULLT   shift, and go to state 98
+    PLUS    shift, and go to state 99
+    MINUS   shift, and go to state 100
+    NOT     shift, and go to state 101
+
+    name           go to state 102
+    expression     go to state 188
+    newExpression  go to state 105
+    ident          go to state 106
+    number         go to state 107
+
+
+State 163
+
+   76 expression: READ LPAREN RPAREN .
+
+    $default  reduce using rule 76 (expression)
+
+
+State 164
+
+   93 expression: LPAREN expression RPAREN .
+
+    $default  reduce using rule 93 (expression)
+
+
+State 165
+
+   98 brackExpressions: LBRACK . expression RBRACK
+
+    ID      shift, and go to state 4
+    NUMBER  shift, and go to state 94
+    READ    shift, and go to state 95
+    LPAREN  shift, and go to state 96
+    NEW     shift, and go to state 97
+    THIS    shift, and go to state 66
+    NULLT   shift, and go to state 98
+    PLUS    shift, and go to state 99
+    MINUS   shift, and go to state 100
+    NOT     shift, and go to state 101
+
+    name           go to state 102
+    expression     go to state 189
+    newExpression  go to state 105
+    ident          go to state 106
+    number         go to state 107
+
+
+State 166
+
+   96 newExpression: NEW simpleType brackExpressions . bracks
+   97              | NEW simpleType brackExpressions .
+   99 brackExpressions: brackExpressions . LBRACK expression RBRACK
+
+    LBRACK  shift, and go to state 190
+
+    $default  reduce using rule 97 (newExpression)
+
+    bracks  go to state 191
+
+
+State 167
+
+   95 newExpression: NEW ident LPAREN . argList RPAREN
+
+    ID      shift, and go to state 4
+    NUMBER  shift, and go to state 94
+    READ    shift, and go to state 95
+    LPAREN  shift, and go to state 96
+    NEW     shift, and go to state 97
+    THIS    shift, and go to state 66
+    NULLT   shift, and go to state 98
+    PLUS    shift, and go to state 99
+    MINUS   shift, and go to state 100
+    NOT     shift, and go to state 101
+
+    $default  reduce using rule 65 (argList)
+
+    name           go to state 102
+    argList        go to state 192
+    expression     go to state 129
+    newExpression  go to state 105
+    ident          go to state 106
+    number         go to state 107
+
+
+State 168
+
+   67 argList: argList . COMMA expression
+   75 expression: name LPAREN argList . RPAREN
+
+    RPAREN  shift, and go to state 193
+    COMMA   shift, and go to state 162
+
+
+State 169
+
+   81 expression: expression . EQ expression
+   81           | expression EQ expression .
+   82           | expression . NE expression
+   83           | expression . LE expression
+   84           | expression . GE expression
+   85           | expression . LT expression
+   86           | expression . GT expression
+   87           | expression . PLUS expression
+   88           | expression . MINUS expression
+   89           | expression . OR expression
+   90           | expression . TIMES expression
+   91           | expression . DIV expression
+   92           | expression . MOD expression
+   94           | expression . AND expression
+
+    TIMES  shift, and go to state 145
+    DIV    shift, and go to state 146
+    MOD    shift, and go to state 147
+    AND    shift, and go to state 148
+    OR     shift, and go to state 149
+    PLUS   shift, and go to state 150
+    MINUS  shift, and go to state 151
+
+    $default  reduce using rule 81 (expression)
+
+
+State 170
+
+   81 expression: expression . EQ expression
+   82           | expression . NE expression
+   82           | expression NE expression .
+   83           | expression . LE expression
+   84           | expression . GE expression
+   85           | expression . LT expression
+   86           | expression . GT expression
+   87           | expression . PLUS expression
+   88           | expression . MINUS expression
+   89           | expression . OR expression
+   90           | expression . TIMES expression
+   91           | expression . DIV expression
+   92           | expression . MOD expression
+   94           | expression . AND expression
+
+    TIMES  shift, and go to state 145
+    DIV    shift, and go to state 146
+    MOD    shift, and go to state 147
+    AND    shift, and go to state 148
+    OR     shift, and go to state 149
+    PLUS   shift, and go to state 150
+    MINUS  shift, and go to state 151
+
+    $default  reduce using rule 82 (expression)
+
+
+State 171
+
+   81 expression: expression . EQ expression
+   82           | expression . NE expression
+   83           | expression . LE expression
+   84           | expression . GE expression
+   84           | expression GE expression .
+   85           | expression . LT expression
+   86           | expression . GT expression
+   87           | expression . PLUS expression
+   88           | expression . MINUS expression
+   89           | expression . OR expression
+   90           | expression . TIMES expression
+   91           | expression . DIV expression
+   92           | expression . MOD expression
+   94           | expression . AND expression
+
+    TIMES  shift, and go to state 145
+    DIV    shift, and go to state 146
+    MOD    shift, and go to state 147
+    AND    shift, and go to state 148
+    OR     shift, and go to state 149
+    PLUS   shift, and go to state 150
+    MINUS  shift, and go to state 151
+
+    $default  reduce using rule 84 (expression)
+
+
+State 172
+
+   81 expression: expression . EQ expression
+   82           | expression . NE expression
+   83           | expression . LE expression
+   83           | expression LE expression .
+   84           | expression . GE expression
+   85           | expression . LT expression
+   86           | expression . GT expression
+   87           | expression . PLUS expression
+   88           | expression . MINUS expression
+   89           | expression . OR expression
+   90           | expression . TIMES expression
+   91           | expression . DIV expression
+   92           | expression . MOD expression
+   94           | expression . AND expression
+
+    TIMES  shift, and go to state 145
+    DIV    shift, and go to state 146
+    MOD    shift, and go to state 147
+    AND    shift, and go to state 148
+    OR     shift, and go to state 149
+    PLUS   shift, and go to state 150
+    MINUS  shift, and go to state 151
+
+    $default  reduce using rule 83 (expression)
+
+
+State 173
+
+   81 expression: expression . EQ expression
+   82           | expression . NE expression
+   83           | expression . LE expression
+   84           | expression . GE expression
+   85           | expression . LT expression
+   86           | expression . GT expression
+   86           | expression GT expression .
+   87           | expression . PLUS expression
+   88           | expression . MINUS expression
+   89           | expression . OR expression
+   90           | expression . TIMES expression
+   91           | expression . DIV expression
+   92           | expression . MOD expression
+   94           | expression . AND expression
+
+    TIMES  shift, and go to state 145
+    DIV    shift, and go to state 146
+    MOD    shift, and go to state 147
+    AND    shift, and go to state 148
+    OR     shift, and go to state 149
+    PLUS   shift, and go to state 150
+    MINUS  shift, and go to state 151
+
+    $default  reduce using rule 86 (expression)
+
+
+State 174
+
+   81 expression: expression . EQ expression
+   82           | expression . NE expression
+   83           | expression . LE expression
+   84           | expression . GE expression
+   85           | expression . LT expression
+   85           | expression LT expression .
+   86           | expression . GT expression
+   87           | expression . PLUS expression
+   88           | expression . MINUS expression
+   89           | expression . OR expression
+   90           | expression . TIMES expression
+   91           | expression . DIV expression
+   92           | expression . MOD expression
+   94           | expression . AND expression
+
+    TIMES  shift, and go to state 145
+    DIV    shift, and go to state 146
+    MOD    shift, and go to state 147
+    AND    shift, and go to state 148
+    OR     shift, and go to state 149
+    PLUS   shift, and go to state 150
+    MINUS  shift, and go to state 151
+
+    $default  reduce using rule 85 (expression)
+
+
+State 175
+
+   81 expression: expression . EQ expression
+   82           | expression . NE expression
+   83           | expression . LE expression
+   84           | expression . GE expression
+   85           | expression . LT expression
+   86           | expression . GT expression
+   87           | expression . PLUS expression
+   88           | expression . MINUS expression
+   89           | expression . OR expression
+   90           | expression . TIMES expression
+   90           | expression TIMES expression .
+   91           | expression . DIV expression
+   92           | expression . MOD expression
+   94           | expression . AND expression
+
+    PLUS   shift, and go to state 150
+    MINUS  shift, and go to state 151
+
+    $default  reduce using rule 90 (expression)
+
+
+State 176
+
+   81 expression: expression . EQ expression
+   82           | expression . NE expression
+   83           | expression . LE expression
+   84           | expression . GE expression
+   85           | expression . LT expression
+   86           | expression . GT expression
+   87           | expression . PLUS expression
+   88           | expression . MINUS expression
+   89           | expression . OR expression
+   90           | expression . TIMES expression
+   91           | expression . DIV expression
+   91           | expression DIV expression .
+   92           | expression . MOD expression
+   94           | expression . AND expression
+
+    PLUS   shift, and go to state 150
+    MINUS  shift, and go to state 151
+
+    $default  reduce using rule 91 (expression)
+
+
+State 177
+
+   81 expression: expression . EQ expression
+   82           | expression . NE expression
+   83           | expression . LE expression
+   84           | expression . GE expression
+   85           | expression . LT expression
+   86           | expression . GT expression
+   87           | expression . PLUS expression
+   88           | expression . MINUS expression
+   89           | expression . OR expression
+   90           | expression . TIMES expression
+   91           | expression . DIV expression
+   92           | expression . MOD expression
+   92           | expression MOD expression .
+   94           | expression . AND expression
+
+    PLUS   shift, and go to state 150
+    MINUS  shift, and go to state 151
+
+    $default  reduce using rule 92 (expression)
+
+
+State 178
+
+   81 expression: expression . EQ expression
+   82           | expression . NE expression
+   83           | expression . LE expression
+   84           | expression . GE expression
+   85           | expression . LT expression
+   86           | expression . GT expression
+   87           | expression . PLUS expression
+   88           | expression . MINUS expression
+   89           | expression . OR expression
+   90           | expression . TIMES expression
+   91           | expression . DIV expression
+   92           | expression . MOD expression
+   94           | expression . AND expression
+   94           | expression AND expression .
+
+    PLUS   shift, and go to state 150
+    MINUS  shift, and go to state 151
+
+    $default  reduce using rule 94 (expression)
+
+
+State 179
+
+   81 expression: expression . EQ expression
+   82           | expression . NE expression
+   83           | expression . LE expression
+   84           | expression . GE expression
+   85           | expression . LT expression
+   86           | expression . GT expression
+   87           | expression . PLUS expression
+   88           | expression . MINUS expression
+   89           | expression . OR expression
+   89           | expression OR expression .
+   90           | expression . TIMES expression
+   91           | expression . DIV expression
+   92           | expression . MOD expression
+   94           | expression . AND expression
+
+    PLUS   shift, and go to state 150
+    MINUS  shift, and go to state 151
+
+    $default  reduce using rule 89 (expression)
+
+
+State 180
+
+   81 expression: expression . EQ expression
+   82           | expression . NE expression
+   83           | expression . LE expression
+   84           | expression . GE expression
+   85           | expression . LT expression
+   86           | expression . GT expression
+   87           | expression . PLUS expression
+   87           | expression PLUS expression .
+   88           | expression . MINUS expression
+   89           | expression . OR expression
+   90           | expression . TIMES expression
+   91           | expression . DIV expression
+   92           | expression . MOD expression
+   94           | expression . AND expression
+
+    $default  reduce using rule 87 (expression)
+
+
+State 181
+
+   81 expression: expression . EQ expression
+   82           | expression . NE expression
+   83           | expression . LE expression
+   84           | expression . GE expression
+   85           | expression . LT expression
+   86           | expression . GT expression
+   87           | expression . PLUS expression
+   88           | expression . MINUS expression
+   88           | expression MINUS expression .
+   89           | expression . OR expression
+   90           | expression . TIMES expression
+   91           | expression . DIV expression
+   92           | expression . MOD expression
+   94           | expression . AND expression
+
+    $default  reduce using rule 88 (expression)
+
+
+State 182
+
+   55 statement: name LPAREN argList RPAREN . SEMI
+
+    SEMI  shift, and go to state 194
+
+
+State 183
+
+   54 statement: name ASSIGN expression SEMI .
+
+    $default  reduce using rule 54 (statement)
+
+
+State 184
+
+   64 name: name LBRACK expression RBRACK .
+
+    $default  reduce using rule 64 (name)
+
+
+State 185
+
+   68 conditionalStatement: IF LPAREN expression RPAREN statement .
+   69                     | IF LPAREN expression RPAREN statement . ELSE statement
+
+    ELSE  shift, and go to state 195
+
+    ELSE      [reduce using rule 68 (conditionalStatement)]
+    $default  reduce using rule 68 (conditionalStatement)
+
+
+State 186
+
+   56 statement: WHILE LPAREN expression RPAREN statement .
+
+    $default  reduce using rule 56 (statement)
+
+
+State 187
+
+   57 statement: PRINT LPAREN argList RPAREN SEMI .
+
+    $default  reduce using rule 57 (statement)
+
+
+State 188
+
+   67 argList: argList COMMA expression .
+   81 expression: expression . EQ expression
+   82           | expression . NE expression
+   83           | expression . LE expression
+   84           | expression . GE expression
+   85           | expression . LT expression
+   86           | expression . GT expression
+   87           | expression . PLUS expression
+   88           | expression . MINUS expression
+   89           | expression . OR expression
+   90           | expression . TIMES expression
+   91           | expression . DIV expression
+   92           | expression . MOD expression
+   94           | expression . AND expression
+
+    EQ     shift, and go to state 139
+    NE     shift, and go to state 140
+    GE     shift, and go to state 141
+    LE     shift, and go to state 142
+    GT     shift, and go to state 143
+    LT     shift, and go to state 144
+    TIMES  shift, and go to state 145
+    DIV    shift, and go to state 146
+    MOD    shift, and go to state 147
+    AND    shift, and go to state 148
+    OR     shift, and go to state 149
+    PLUS   shift, and go to state 150
+    MINUS  shift, and go to state 151
+
+    $default  reduce using rule 67 (argList)
+
+
+State 189
+
+   81 expression: expression . EQ expression
+   82           | expression . NE expression
+   83           | expression . LE expression
+   84           | expression . GE expression
+   85           | expression . LT expression
+   86           | expression . GT expression
+   87           | expression . PLUS expression
+   88           | expression . MINUS expression
+   89           | expression . OR expression
+   90           | expression . TIMES expression
+   91           | expression . DIV expression
+   92           | expression . MOD expression
+   94           | expression . AND expression
+   98 brackExpressions: LBRACK expression . RBRACK
+
+    RBRACK  shift, and go to state 196
+    EQ      shift, and go to state 139
+    NE      shift, and go to state 140
+    GE      shift, and go to state 141
+    LE      shift, and go to state 142
+    GT      shift, and go to state 143
+    LT      shift, and go to state 144
+    TIMES   shift, and go to state 145
+    DIV     shift, and go to state 146
+    MOD     shift, and go to state 147
+    AND     shift, and go to state 148
+    OR      shift, and go to state 149
+    PLUS    shift, and go to state 150
+    MINUS   shift, and go to state 151
+
+
+State 190
+
+   99 brackExpressions: brackExpressions LBRACK . expression RBRACK
+  100 bracks: LBRACK . RBRACK
+
+    ID      shift, and go to state 4
+    NUMBER  shift, and go to state 94
+    READ    shift, and go to state 95
+    LPAREN  shift, and go to state 96
+    NEW     shift, and go to state 97
+    THIS    shift, and go to state 66
+    NULLT   shift, and go to state 98
+    RBRACK  shift, and go to state 197
+    PLUS    shift, and go to state 99
+    MINUS   shift, and go to state 100
+    NOT     shift, and go to state 101
+
+    name           go to state 102
+    expression     go to state 198
+    newExpression  go to state 105
+    ident          go to state 106
+    number         go to state 107
+
+
+State 191
+
+   96 newExpression: NEW simpleType brackExpressions bracks .
+  101 bracks: bracks . LBRACK RBRACK
+
+    LBRACK  shift, and go to state 199
+
+    $default  reduce using rule 96 (newExpression)
+
+
+State 192
+
+   67 argList: argList . COMMA expression
+   95 newExpression: NEW ident LPAREN argList . RPAREN
+
+    RPAREN  shift, and go to state 200
+    COMMA   shift, and go to state 162
+
+
+State 193
+
+   75 expression: name LPAREN argList RPAREN .
+
+    $default  reduce using rule 75 (expression)
+
+
+State 194
+
+   55 statement: name LPAREN argList RPAREN SEMI .
+
+    $default  reduce using rule 55 (statement)
+
+
+State 195
+
+   69 conditionalStatement: IF LPAREN expression RPAREN statement ELSE . statement
+
+    ID      shift, and go to state 4
+    THIS    shift, and go to state 66
+    SEMI    shift, and go to state 67
+    LBRACE  shift, and go to state 68
+    IF      shift, and go to state 70
+    WHILE   shift, and go to state 71
+    PRINT   shift, and go to state 72
+    RETURN  shift, and go to state 73
+
+    subBlock              go to state 77
+    statement             go to state 201
+    name                  go to state 80
+    conditionalStatement  go to state 81
+    ident                 go to state 106
+
+
+State 196
+
+   98 brackExpressions: LBRACK expression RBRACK .
+
+    $default  reduce using rule 98 (brackExpressions)
+
+
+State 197
+
+  100 bracks: LBRACK RBRACK .
+
+    $default  reduce using rule 100 (bracks)
+
+
+State 198
+
+   81 expression: expression . EQ expression
+   82           | expression . NE expression
+   83           | expression . LE expression
+   84           | expression . GE expression
+   85           | expression . LT expression
+   86           | expression . GT expression
+   87           | expression . PLUS expression
+   88           | expression . MINUS expression
+   89           | expression . OR expression
+   90           | expression . TIMES expression
+   91           | expression . DIV expression
+   92           | expression . MOD expression
+   94           | expression . AND expression
+   99 brackExpressions: brackExpressions LBRACK expression . RBRACK
+
+    RBRACK  shift, and go to state 202
+    EQ      shift, and go to state 139
+    NE      shift, and go to state 140
+    GE      shift, and go to state 141
+    LE      shift, and go to state 142
+    GT      shift, and go to state 143
+    LT      shift, and go to state 144
+    TIMES   shift, and go to state 145
+    DIV     shift, and go to state 146
+    MOD     shift, and go to state 147
+    AND     shift, and go to state 148
+    OR      shift, and go to state 149
+    PLUS    shift, and go to state 150
+    MINUS   shift, and go to state 151
+
+
+State 199
+
+  101 bracks: bracks LBRACK . RBRACK
+
+    RBRACK  shift, and go to state 203
+
+
+State 200
+
+   95 newExpression: NEW ident LPAREN argList RPAREN .
+
+    $default  reduce using rule 95 (newExpression)
+
+
+State 201
+
+   69 conditionalStatement: IF LPAREN expression RPAREN statement ELSE statement .
+
+    $default  reduce using rule 69 (conditionalStatement)
+
+
+State 202
+
+   99 brackExpressions: brackExpressions LBRACK expression RBRACK .
+
+    $default  reduce using rule 99 (brackExpressions)
+
+
+State 203
+
+  101 bracks: bracks LBRACK RBRACK .
+
+    $default  reduce using rule 101 (bracks)

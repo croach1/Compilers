@@ -1,0 +1,6 @@
+class goo {
+  int main()
+  {
+    return 0; 
+  }
+}
