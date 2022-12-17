@@ -1,0 +1,210 @@
+/*
+ program6.lpp
+ COSC 4785
+ Colton Roach
+ December 12, 2022
+*/
+
+%{
+
+using namespace std;
+
+#include "nodes.hpp"
+#include "program6.tab.hpp"
+
+
+%}
+%x C_COMMENT
+
+%option outfile="program6_lex.cpp"
+%option noyywrap
+%option yylineno
+
+
+%%
+
+"="     {
+            //token="ASSIGN";
+            return ASSIGN;
+        }
+"=="    {
+            //token="EQ";
+            return EQ;
+        }
+">"     {
+            //token="GT";
+            return GT;
+        }
+"<"     {
+            //token="LT";
+            return LT;
+        }
+">="    {
+            //token="GEQ";
+            return GE;
+        }
+"<="    {
+            //token="LEQ";
+            return LE;
+        }
+"!="    {
+            //token="NEQ";
+            return NE;
+        }
+"+"     {
+            //token="PLUS";
+            return PLUS;
+        }
+"-"     {
+            //token="MINUS";
+            return MINUS;
+        }
+"*"     {
+            //token="TIMES";
+            return TIMES;
+        }
+"/"     {
+            //token="DIV";
+            return DIV;
+        }
+"||"    {
+            //token="OR";
+            return OR;
+        }
+"&&"    {
+            //token="AND";
+            return AND;
+        }
+"{"     {
+            //token="LBRACE";
+            return LBRACE;
+        }
+"}"     {
+            //token="RBRACE";
+            return RBRACE;
+        }
+"["     {
+            //token="LBRACK";
+            return LBRACK;
+        }
+"]"     {
+            //token="RBRACK";
+            return RBRACK;
+        }
+"("     {
+            //token="LPAREN";
+            return LPAREN;
+        }
+")"     {
+            //token="RPAREN";
+            return RPAREN;
+        }
+"."     {
+            //token="DOT";
+            return DOT;
+        }
+","     {
+            //token="COMMA";
+            return COMMA;
+        }
+";"     {
+            //token="SEMI";
+            return SEMI;
+        }
+"!"     {
+            //token="NOT";
+            return NOT;
+        }
+"%"     {
+            //token="MOD";
+            return MOD;
+        }
+\/\/.*\n  {
+            //token="COMMENT";
+            //return 25;
+        }
+"/*"    {
+            BEGIN(C_COMMENT);
+            //return 50;
+        }
+<C_COMMENT>"*/" {
+            BEGIN(INITIAL);
+            //return 53;
+        }
+<C_COMMENT>\n {
+            //return 51;
+        }
+<C_COMMENT>.  {
+            //return 52;
+        }
+"this"  {
+            //token="THIS";
+            return THIS;
+        }
+"if"    {
+            //token="IF";
+            return IF;
+        }
+"else"  {
+            //token="ELSE";
+            return ELSE;
+        }
+"while" {
+            //token="WHILE";
+            return WHILE;
+        }
+"int"   {
+            //token="INT";
+            return INT;
+        }
+"void"  {
+            //token="VOID";
+            return VOID;
+        }
+"class" {
+            //token="CLASS";
+            return CLASS;
+        }
+"new"   {
+            //token="NEW";
+            return NEW;
+        }
+"print" {
+            //token="PRINT";
+            return PRINT;
+        }
+"read"  {
+            //token="READ";
+            return READ;
+        }
+"return" {
+            //token="RETURN";
+            return RETURN;
+        }
+"null"  {
+            //token="NULLT";
+            return NULLT;
+        }
+[_a-zA-Z][_a-zA-Z0-9]*  {
+            //token="IDENT";
+            return ID;
+        }
+[0-9]+  {
+            //token="NUMBER";
+            return NUMBER;
+        }
+\n      {
+            //return 41;
+        }
+\t      {
+            //return 42;
+        }
+" "     {
+            //return 43;   
+        }
+.       {
+            cerr << "Unrecognized character: \"" << yytext << "\" on line: " << yylineno << endl;
+            //token="ER_CH";
+            //return 45;
+        }
+%%

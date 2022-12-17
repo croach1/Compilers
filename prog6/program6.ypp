@@ -1,0 +1,794 @@
+//program6.ypp
+//Colton Roach
+//December 12, 2022
+//COSC 4785
+
+%{
+
+#include <iostream>
+#include <FlexLexer.h>
+#include "nodes.hpp"
+#include "symbols.hpp"
+#include <stdlib.h>
+
+using std::cerr;
+using std::cout;
+using std::endl;
+
+extern Node *tree;
+extern yyFlexLexer scanner;
+extern SymbolTable *st;
+extern SymbolTable *current;
+
+extern bool returned;
+
+extern vector<SymbolTable *> tempCons;
+extern vector<SymbolTable *> tempMeths;
+extern vector<SymbolTable *> tempBlocks;
+
+extern unordered_map<string, string> tempClassVars;
+extern unordered_map<string, string> tempConsVars;
+extern unordered_map<string, string> tempMethVars;
+extern unordered_map<string, string> tempBlockVars;
+
+extern map<string, string> tempMethParams;
+extern map<string, string> tempConsParams;
+
+extern string lookup(string id, unordered_map<string, string> tempClassVars, 
+              unordered_map<string, string> tempConsVars,
+              unordered_map<string, string> tempMethVars,
+              unordered_map<string, string> tempBlockVars,
+              map<string, string> tempMethParams,
+              map<string, string> tempConsParams);
+
+#define yylex() scanner.yylex()
+
+void yyerror(string str)
+{
+  cerr << str << endl;
+}
+
+%}
+
+
+%union {
+    Node *ttype;
+}
+
+
+%type<ttype> program classDeclaration classBody vardec type blockVariableDeclarations
+%type<ttype> simpleType constructorDeclarations consdec methodDeclarations methdec
+%type<ttype> methParamList consParamList parameter constructorBlock methodBlock subBlock statements 
+%type<ttype> constructorVariableDeclarations methodVariableDeclarations classVariableDeclarations
+%type<ttype> statement name argList conditionalStatement optionalExpression expression
+%type<ttype> newExpression ident number bracks brackExpressions thisHere
+
+%token INT ID 
+%token NUMBER READ LPAREN RPAREN ASSIGN
+%token NEW THIS NULLT SEMI
+%token LBRACE RBRACE DOT COMMA
+%token IF WHILE VOID CLASS PRINT RETURN
+%token THEN ELSE
+%token LBRACK RBRACK
+
+%left EQ NE GE LE GT LT
+%left TIMES DIV MOD AND OR
+%left PLUS MINUS NOT
+
+%%
+
+
+program: 
+    classDeclaration{
+        //cout<<"program"<<endl;
+        $$ = new nodeProgram($1);
+	tree = $$;
+    }
+    | program classDeclaration{
+	$$ = new nodeProgram($1, $2);
+	tree = $$;
+    }
+;
+classDeclaration:
+    CLASS ident classBody{
+        //cout<<"classDeclaration"<<endl;
+        current = new SymbolTable("<SYMBOL TABLE>: <class> " + $2->getID());
+        current->setClassName($2->getID());
+        for(auto x: tempClassVars)
+        {
+            current->insertVariable(x.first, x.second);
+        }
+        for(SymbolTable *x : tempCons)
+        {
+            x->setParent(current);
+            current->insertConstructor(x);
+        }
+        for(SymbolTable *x : tempMeths)
+        {
+            x->setParent(current);
+            current->insertMethod(x);
+        }
+        tempClassVars.clear();
+        tempCons.clear();
+        tempMeths.clear();
+        $$ = new nodeClassDeclaration($2, $3);
+        st->insertClassType(current);
+    }
+;
+classBody:
+    LBRACE RBRACE{
+        $$ = new nodeClassBody(1);
+    }
+    | LBRACE classVariableDeclarations RBRACE{
+        $$ = new nodeClassBody($2, 2);
+    }
+    | LBRACE constructorDeclarations RBRACE{
+        $$ = new nodeClassBody($2, 3);
+    }
+    | LBRACE methodDeclarations RBRACE{
+        $$ = new nodeClassBody($2, 4);
+    }
+    | LBRACE classVariableDeclarations constructorDeclarations RBRACE{
+        $$ = new nodeClassBody($2, $3, 5);
+    }
+    | LBRACE classVariableDeclarations methodDeclarations RBRACE{
+        $$ = new nodeClassBody($2, $3, 6);
+    }
+    | LBRACE constructorDeclarations methodDeclarations RBRACE{
+        $$ = new nodeClassBody($2, $3, 7);
+    }
+    | LBRACE classVariableDeclarations constructorDeclarations methodDeclarations RBRACE{
+        //cout << "classbody" << endl;
+        $$ = new nodeClassBody($2, $3, $4, 8);
+    }
+;
+classVariableDeclarations:
+    vardec{
+        //cout<<"classVariableDeclartation -> vardec"<<endl;
+
+        //cout<<"\n"<<$1->getID()<<endl;
+        tempClassVars.insert(make_pair($1->getID(), $1->getVardecType()));
+        $$ = new nodeClassVariableDeclarations($1);
+    }
+    | classVariableDeclarations vardec{
+        //cout<<"classVariableDeclarations -> classVariableDeclarations vardec"<<endl;
+
+        //cout<<"\n"<<$1->getID()<<endl;
+        tempClassVars.insert(make_pair($2->getID(), $2->getVardecType()));
+        $$ = new nodeClassVariableDeclarations($1, $2);
+    }
+;
+constructorVariableDeclarations:
+    vardec{
+        //cout<<"constructorVariableDeclartation -> vardec"<<endl;
+        tempConsVars.insert(make_pair($1->getID(), $1->getVardecType()));
+        $$ = new nodeConstructorVariableDeclarations($1);
+    }
+    | constructorVariableDeclarations vardec{
+        //cout<<"constructorVariableDeclarations -> constructorVariableDeclarations vardec"<<endl;
+        tempConsVars.insert(make_pair($2->getID(), $2->getVardecType()));
+        $$ = new nodeConstructorVariableDeclarations($1, $2);
+    }
+;
+methodVariableDeclarations:
+    vardec{
+        //cout<<"methodVariableDeclaratation -> vardec"<<endl;
+        tempMethVars.insert(make_pair($1->getID(), $1->getVardecType()));
+        $$ = new nodeMethodVariableDeclarations($1);
+    }
+    | methodVariableDeclarations vardec{
+        //cout<<"methodVariableDeclarations -> methodVariableDeclarations vardec"<<endl;
+        tempMethVars.insert(make_pair($2->getID(), $2->getVardecType()));
+        $$ = new nodeMethodVariableDeclarations($1, $2);
+    }
+;
+blockVariableDeclarations:
+    vardec{
+        //cout<<"blockVariableDeclaratation -> vardec"<<endl;
+        tempBlockVars.insert(make_pair($1->getID(), $1->getVardecType()));
+        $$ = new nodeBlockVariableDeclarations($1);
+    }
+    | blockVariableDeclarations vardec{
+        //cout<<"blockVariableDeclarations -> blockVariableDeclarations vardec"<<endl;
+        tempBlockVars.insert(make_pair($2->getID(), $2->getVardecType()));
+        $$ = new nodeBlockVariableDeclarations($1, $2);
+    }
+;
+
+/*
+variableDeclarations:
+    vardec{
+        //cout<<"VariableDeclarations -> vardec"<<endl;
+        $$ = new nodeVariableDeclarations($1);
+    }
+    | variableDeclarations vardec{
+        //cout<<"VariableDeclarations -> VariableDeclarations vardec"<<endl;
+        $$ = new nodeVariableDeclarations($1, $2);
+    }
+;
+*/
+
+vardec:
+    type ident SEMI{
+        //cout << "vardec: " << $2->getID() << endl;
+        $$ = new nodeVarDec($1, $2, $2->getID(), $1->getID(), 1);
+    }
+;
+type:
+    simpleType{
+        //cout<<"type -> simpleType"<<endl;
+        $$ = new nodeType($1, 1);
+    }
+    | type LBRACK RBRACK{
+        //cout<<"TYPE -> TYPE LBRACK RBRACK"<<endl;
+        $$ = new nodeType($1, 2);
+    }
+;
+simpleType:
+    INT{
+        //cout<<"simpleType -> INT"<<endl;
+        $$ = new nodeSimpleType();
+    }
+    | ident{
+        //cout<<"simpleType -> ident"<<endl;
+        $$ = new nodeSimpleType($1);
+    }
+;
+constructorDeclarations:
+    consdec{
+        //cout<<"constructorDeclarations -> consdec"<<endl;
+        $$ = new nodeConstructorDeclarations($1);
+    }
+    | constructorDeclarations consdec{
+        //cout<<"constructorDeclarations -> constructorDeclarations consdec"<<endl;
+        $$ = new nodeConstructorDeclarations($1, $2);
+    }
+;
+consdec:
+    ident LPAREN consParamList RPAREN constructorBlock{
+        //cout << "consdec -> lots" << endl;
+        
+        if(returned)
+        {
+            yyerror("Cannot return a value from a constructor. Exiting...");
+            YYABORT;
+        }
+
+        current = new SymbolTable("<SYMBOL TABLE>: <constructor> " + $1->getID());
+        for(auto x : tempConsVars)
+        {
+            current->insertVariable(x.first, x.second); //add constructor variables
+        }
+        for(auto x : tempConsParams)
+        {
+            current->insertParameter(x.first, x.second);
+        }
+        for(SymbolTable *x : tempBlocks)
+        {
+            x->setParent(current);
+            current->insertBlock(x);
+        }
+        tempBlocks.clear();
+        tempConsVars.clear(); //clear out constructor variables
+        tempConsParams.clear();
+        tempCons.push_back(current); //add constructor to temporary vector
+        
+        $$ = new nodeConsDec($1, $3, $5);
+    }
+;
+methodDeclarations:
+    methdec{
+        //cout << "methodDeclarations -> methdec" << endl;
+        $$ = new nodeMethodDeclarations($1);
+    }
+    | methodDeclarations methdec{
+        //cout << "methodDeclarations -> methodDeclarations methdec" << endl;
+        $$ = new nodeMethodDeclarations($2, $1);
+    }
+;
+methdec:
+    type ident LPAREN methParamList RPAREN methodBlock{
+        //cout << "methdec -> lots" << endl;
+
+        current = new SymbolTable("<SYMBOL TABLE>: <method> " + $2->getID());
+        current->setMethodName($2->getID());
+        current->setMethodReturnType($1->getID());
+        
+        for(auto x : tempMethVars)
+        {
+            //cout<<"INSERTING VARS INTO METHOD TABLE" << endl;
+            current->insertVariable(x.first, x.second);
+        }
+        for(auto x : tempMethParams)
+        {
+            //cout<<"INSERTING PARAMS INTO METHOD TABLE"<<endl;
+            current->insertParameter(x.first, x.second);
+        }
+        for(SymbolTable *x : tempBlocks)
+        {
+            x->setParent(current);
+            current->insertBlock(x);
+        }
+        tempBlocks.clear();
+        tempMethVars.clear();
+        tempMethParams.clear();
+        tempMeths.push_back(current);
+        
+        $$ = new nodeMethDec($1, $2, $4, $6);
+    } 
+    | VOID ident LPAREN methParamList RPAREN methodBlock{
+        //cout << "methdec -> lots" << endl;
+        if(returned){
+            yyerror("Cannot return a value from a void method, exiting...");
+            returned = false;
+            YYABORT;
+        }
+        
+        current = new SymbolTable("<SYMBOL TABLE>: <method> " + $2->getID());
+        current->setMethodReturnType("void");
+        current->setMethodName($2->getID());
+        for(auto x : tempMethVars)
+        {
+            //cout<<"INSERTING VARS INTO METHOD TABLE" << endl;
+            current->insertVariable(x.first, x.second);
+        }
+        for(auto x : tempMethParams)
+        {
+            //cout<<"INSERTING PARAMS INTO METHOD TABLE"<<endl;
+            current->insertParameter(x.first, x.second);
+        }
+        for(SymbolTable *x : tempBlocks)
+        {
+            x->setParent(current);
+            current->insertBlock(x);
+        }
+        tempBlocks.clear();
+        tempMethVars.clear();
+        tempMethParams.clear();
+        tempMeths.push_back(current);
+        
+        $$ = new nodeMethDec($2, $4, $6);
+    }
+;
+/*
+resultType:
+    INT{
+        //cout<<"resultType -> type"<<endl;
+        $$ = new nodeResultType(1);
+    }
+    | VOID{
+        //cout<<"resultType -> VOID"<<endl;
+        $$ = new nodeResultType(2);
+    }
+;
+*/
+consParamList:
+    %empty{
+        //cout << "paramList -> empty" << endl;
+        $$ = new nodeParameterList();
+    }
+    | parameter{
+        //cout << "paramList -> parameter" << endl;
+        
+        tempConsParams.insert(make_pair($1->getID(), $1->getVardecType()));
+
+        $$ = new nodeParameterList($1);
+    }
+    | consParamList COMMA parameter{
+        //cout << "paramList -> paramList COMMA parameter" << endl;
+        
+        tempConsParams.insert(make_pair($3->getID(), $3->getVardecType()));
+        
+        $$ = new nodeParameterList($1, $3);
+    }
+;
+methParamList:
+    %empty{
+        //cout << "paramList -> empty" << endl;
+        $$ = new nodeParameterList();
+    }
+    | parameter{
+        //cout << "paramList -> parameter" << endl;
+        
+        tempMethParams.insert(make_pair($1->getID(), $1->getVardecType()));
+
+        $$ = new nodeParameterList($1);
+    }
+    | methParamList COMMA parameter{
+        //cout << "paramList -> paramList COMMA parameter" << endl;
+        
+        tempMethParams.insert(make_pair($3->getID(), $3->getVardecType()));
+        
+        $$ = new nodeParameterList($1, $3);
+    }
+;
+parameter:
+    type ident{
+        //cout << "parameter -> type ident" << endl;
+        $$ = new nodeParameter($1, $2, $2->getID(), $1->getID());
+    }
+;
+constructorBlock:
+    LBRACE RBRACE{
+        $$ = new nodeBlock(1);
+    }
+    | LBRACE constructorVariableDeclarations RBRACE{
+        $$ = new nodeBlock($2, 2);
+    }
+    | LBRACE statements RBRACE{
+        $$ = new nodeBlock($2, 3);
+    }
+    | LBRACE constructorVariableDeclarations statements RBRACE{
+        $$ = new nodeBlock($2, $3, 4);
+    }
+;
+methodBlock:
+    LBRACE RBRACE{
+        //cout<<"methodBlock"<<endl;
+        $$ = new nodeBlock(1);
+    }
+    | LBRACE methodVariableDeclarations RBRACE{
+        $$ = new nodeBlock($2, 2);
+    }
+    | LBRACE statements RBRACE{
+        $$ = new nodeBlock($2, 3);
+    }
+    | LBRACE methodVariableDeclarations statements RBRACE{
+        $$ = new nodeBlock($2, $3, 4);
+    }
+;
+subBlock:
+    LBRACE RBRACE{
+        //cout<<"subBlock"<<endl;
+        $$ = new nodeBlock(1);
+    }
+    | LBRACE blockVariableDeclarations RBRACE{
+        //cout<<"subBlock"<<endl;
+        $$ = new nodeBlock($2, 2);
+    }
+    | LBRACE statements RBRACE{
+        //cout<<"subBlock"<<endl;
+        $$ = new nodeBlock($2, 3);
+    }
+    | LBRACE blockVariableDeclarations statements RBRACE{
+        //cout<<"subBlock"<<endl;
+        $$ = new nodeBlock($2, $3, 4);
+    }
+;
+statements:
+    statement{
+        //cout<<"statement"<<endl;
+        $$ = new nodeStatements($1, 1);
+    }
+    | statements statement{
+        //cout<<"statements"<<endl;
+        $$ = new nodeStatements($2, $1, 2);
+    }
+;
+statement:
+    SEMI{
+        $$ = new nodeStatement(1);
+    }
+    | name ASSIGN expression SEMI{
+        //cout<<"DING DING DING"<<endl;
+        $$ = new nodeStatement($1, $3, 2);
+    }
+    | name LPAREN argList RPAREN SEMI{
+        $$ = new nodeStatement($1, $3, 3);
+    }
+    | WHILE LPAREN expression RPAREN statement{
+        //tempBlocks.back()->setLabel("<SYMBOL TABLE>: <block> while");
+        //cout<<"while"<<endl;
+        $$ = new nodeStatement($3, $5, 6);
+    }
+    | PRINT LPAREN argList RPAREN SEMI{
+        $$ = new nodeStatement($3, 4);
+    }
+    | conditionalStatement{
+        $$ = new nodeStatement($1, 5);
+    }
+    | RETURN optionalExpression SEMI{
+        $$ = new nodeStatement($2, 7);
+    }
+    | subBlock{
+        //cout<<"statement->subBlock"<<endl;
+        
+        current = new SymbolTable("<SYMBOL TABLE>: <block> sub-block");
+        for(auto x : tempBlockVars)
+        {
+            current->insertVariable(x.first, x.second); //add constructor variables
+        }
+        tempBlockVars.clear(); //clear out constructor variables
+        tempBlocks.push_back(current); //add constructor to temporary vector
+
+        $$ = new nodeStatement($1, 8);
+    }
+;
+name:
+    ident{
+        $$ = new nodeName($1, 2);
+    }
+    | name DOT ident{
+        $$ = new nodeName($1, $3, 3);
+    }
+    | thisHere DOT ident{
+        $$ = new nodeName($1, $3, 5);
+    }
+    | name LBRACK expression RBRACK{
+        $$ = new nodeName($1, $3, 4);
+    }
+;
+thisHere:
+    THIS{
+        $$ = new nodeThisHere();
+    }
+;
+argList:
+    %empty{
+        $$ = new nodeArgList();
+    }
+    | expression{
+        $$ = new nodeArgList($1);
+    }
+    | argList COMMA expression{
+        $$ = new nodeArgList($1, $3);
+    }
+;
+conditionalStatement:
+    IF LPAREN expression RPAREN statement{
+        $$ = new nodeConState($3, $5, 1);
+    }
+    | IF LPAREN expression RPAREN statement ELSE statement{
+        $$ = new nodeConState($3, $5, $7, 2);
+    }
+;
+optionalExpression:
+    %empty{
+        $$ = new nodeOpExp();
+    }
+    | expression{
+        returned = true;
+        $$ = new nodeOpExp($1);
+    }
+;
+
+/*
+expression:
+    name{
+        $$ = new nodeExpression($1, 1);
+    }
+    | number{
+        $$ = new nodeExpression($1, 2);
+    }
+    | NULLT{
+        $$ = new nodeExpression(3);
+    }
+    | name LPAREN argList RPAREN{
+        $$ = new nodeExpression($1, $3, 4);
+    }
+    | READ LPAREN RPAREN{
+        $$ = new nodeExpression(5);
+    }
+    | newExpression{
+        $$ = new nodeExpression(6);
+    }
+    | unaryOp expression{
+        $$ = new nodeExpression($1, $2, 7);
+    }
+    | expression relationOp expression{
+        $$ = new nodeExpression($1, $2, $3, 8);
+    }
+    | expression sumOp expression{
+        $$ = new nodeExpression($1, $2, $3, 9);
+    }
+    | expression productOp expression{
+        $$ = new nodeExpression($1, $2, $3, 10);
+    }
+    | LPAREN expression RPAREN{
+        $$ = new nodeExpression($2, 11);
+    }
+;
+*/
+
+expression:
+    name{
+        $$ = new nodeExpression($1, 1);
+    }
+    | number{
+        $$ = new nodeExpression($1, 2);
+    }
+    | NULLT{
+        $$ = new nodeExpression(3);
+    }
+    | name LPAREN argList RPAREN{
+        $$ = new nodeExpression($1, $3, 4);
+    }
+    | READ LPAREN RPAREN{
+        $$ = new nodeExpression(5);
+    }
+    | newExpression{
+        $$ = new nodeExpression(6);
+    }
+    | PLUS expression{
+        $$ = new nodeExpression($2, 7);
+    }
+    | MINUS expression{
+        $$ = new nodeExpression($2, 8);
+    }
+    | NOT expression{
+        $$ = new nodeExpression($2, 9);
+    }
+    | expression EQ expression{
+        $$ = new nodeExpression($1, $3, 10);
+    }
+    | expression NE expression{
+        $$ = new nodeExpression($1, $3, 11);
+    }
+    | expression LE expression{
+        string first = $1->getID();
+        string second = $3->getID();
+
+        string firstType = lookup(first, tempClassVars, tempConsVars, tempMethVars, tempBlockVars, tempMethParams, tempConsParams);
+        string secondType = lookup(second, tempClassVars, tempConsVars, tempMethVars, tempBlockVars, tempMethParams, tempConsParams);
+
+        if(firstType == "")
+        {
+            yyerror("Variable not declared in this scope: " + first);
+            YYABORT;
+        }
+        if(secondType == "")
+        {
+            yyerror("Variable not declared in this scope: " + second);
+            YYABORT;
+        }
+        if(firstType != "int" || secondType != "int")
+        {
+            yyerror("<= operator requires 'int' types, Exiting...");
+            YYABORT;
+        }
+
+        $$ = new nodeExpression($1, $3, 12);
+    }
+    | expression GE expression{
+        string first = $1->getID();
+        string second = $3->getID();
+
+        string firstType = lookup(first, tempClassVars, tempConsVars, tempMethVars, tempBlockVars, tempMethParams, tempConsParams);
+        string secondType = lookup(second, tempClassVars, tempConsVars, tempMethVars, tempBlockVars, tempMethParams, tempConsParams);
+
+        if(firstType == "")
+        {
+            yyerror("Variable not declared in this scope: " + first);
+            YYABORT;
+        }
+        if(secondType == "")
+        {
+            yyerror("Variable not declared in this scope: " + second);
+            YYABORT;
+        }
+        if(firstType != "int" || secondType != "int")
+        {
+            yyerror(">= operator requires 'int' types, Exiting...");
+            YYABORT;
+        }
+
+        $$ = new nodeExpression($1, $3, 13);
+    }
+    | expression LT expression{
+        string first = $1->getID();
+        string second = $3->getID();
+
+        string firstType = lookup(first, tempClassVars, tempConsVars, tempMethVars, tempBlockVars, tempMethParams, tempConsParams);
+        string secondType = lookup(second, tempClassVars, tempConsVars, tempMethVars, tempBlockVars, tempMethParams, tempConsParams);
+
+        if(firstType == "")
+        {
+            yyerror("Variable not declared in this scope: " + first);
+            YYABORT;
+        }
+        if(secondType == "")
+        {
+            yyerror("Variable not declared in this scope: " + second);
+            YYABORT;
+        }
+        if(firstType != "int" || secondType != "int")
+        {
+            yyerror("< operator requires 'int' types, Exiting...");
+            YYABORT;
+        }
+
+        $$ = new nodeExpression($1, $3, 14);
+    }
+    | expression GT expression{
+        string first = $1->getID();
+        string second = $3->getID();
+
+        string firstType = lookup(first, tempClassVars, tempConsVars, tempMethVars, tempBlockVars, tempMethParams, tempConsParams);
+        string secondType = lookup(second, tempClassVars, tempConsVars, tempMethVars, tempBlockVars, tempMethParams, tempConsParams);
+
+        if(firstType == "")
+        {
+            yyerror("Variable not declared in this scope: " + first);
+            YYABORT;
+        }
+        if(secondType == "")
+        {
+            yyerror("Variable not declared in this scope: " + second);
+            YYABORT;
+        }
+        if(firstType != "int" || secondType != "int")
+        {
+            yyerror("> operator requires 'int' types, Exiting...");
+            YYABORT;
+        }
+
+        $$ = new nodeExpression($1, $3, 15);
+    }
+    | expression PLUS expression{
+        $$ = new nodeExpression($1, $3, 16);
+    }
+    | expression MINUS expression{
+        $$ = new nodeExpression($1, $3, 17);
+    }
+    | expression OR expression{
+        $$ = new nodeExpression($1, $3, 18);
+    }
+    | expression TIMES expression{
+        $$ = new nodeExpression($1, $3, 19);
+    }
+    | expression DIV expression{
+        $$ = new nodeExpression($1, $3, 20);
+    }
+    | expression MOD expression{
+        $$ = new nodeExpression($1, $3, 21);
+    }
+    | LPAREN expression RPAREN{
+        $$ = new nodeExpression($2, 22);
+    }
+    | expression AND expression{
+        $$ = new nodeExpression($1, $3, 23);
+    }
+;
+newExpression:
+    NEW ident LPAREN argList RPAREN{
+        $$ = new nodeNewExp($2, $4, 1);
+    }
+    | NEW simpleType brackExpressions bracks{
+        $$ = new nodeNewExp($2, $3, $4, 2);
+    }
+    | NEW simpleType brackExpressions{
+        $$ = new nodeNewExp($2, $3, 3);
+    }
+;
+brackExpressions:
+    LBRACK expression RBRACK{
+        //cout<<"bracks"<<endl;
+        $$ = new nodeBrackExpressions($2);
+    }
+    | brackExpressions LBRACK expression RBRACK{
+        //cout<<"bracks"<<endl;
+        $$ = new nodeBrackExpressions($1, $3);
+    }
+;
+bracks:
+    LBRACK RBRACK{
+        //cout<<"bracks"<<endl;
+        $$ = new nodeBracks();
+    }
+    | bracks LBRACK RBRACK{
+        //cout<<"bracks"<<endl;
+        $$ = new nodeBracks($1);
+    }
+;
+ident: 
+    ID { 
+        $$=new nodeID(scanner.YYText());
+    }
+;
+number: 
+    NUMBER { 
+        $$=new nodeNum(atoi(scanner.YYText()));
+    }
+;
+
+%%
